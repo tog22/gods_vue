@@ -1,7 +1,11 @@
 <template>
 	<table class="board">
 		<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
-			<Square v-for="(col, col_index) in row" :key="'c'+col_index" />
+			<Square 
+				v-for="(cell, col_index) in row" 
+				:key="'c'+col_index"
+				:occupant="cell"
+			/>
 			<!--<Square/>-->
 		</tr>
 	</table>
