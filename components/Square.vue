@@ -1,5 +1,5 @@
 <template>
-	<td :class="inspiration_class">
+	<td :class="inspiration_class" v-on:click="click">
 		<div :class="occupant_class">
 			{{occupant_image}}
 		</div>
@@ -19,7 +19,12 @@
 				occupant_class: '',
 				inspiration_class: ''
 			};
-		}
+		},
+		methods: {
+			click: function(event) {
+				alert('sq clk');
+			}
+		},
 		mounted() {
 			// <div class="angel baboon ">🐒</div>
 			switch (this.square.side) {
