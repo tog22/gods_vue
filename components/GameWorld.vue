@@ -2,9 +2,9 @@
 	<table class="board">
 		<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
 			<Square 
-				v-for="(cell, col_index) in row" 
+				v-for="(square, col_index) in row" 
 				:key="'c'+col_index"
-				:occupant="cell"
+				:square="square"
 			/>
 			<!--<Square/>-->
 		</tr>
@@ -87,7 +87,19 @@
 		</tr>
 	</table>	
 	-->
-	<!-- <table class="board"><tr><td class=""><div class=""></div></td><td class=""><div class="angel baboon ">🐒</div></td><td class=" divinely_inspired "><div class="angel baboon ">🐒</div></td><td class=""><div class="angel baboon ">🐒</div></td><td class=""><div class="angel baboon ">🐒</div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class="mortal baboon ">🐒</div></td><td class=""><div class="mortal baboon ">🐒</div></td><td class=""><div class="mortal baboon ">🐒</div></td><td class=""><div class="mortal baboon ">🐒</div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class="mortal hippo ">🦛</div></td><td class=""><div class="mortal hippo ">🦛</div></td><td class=""><div class="mortal hippo ">🦛</div></td><td class=""><div class="mortal hippo ">🦛</div></td><td class=""><div class=""></div></td></tr><tr><td class=""><div class=""></div></td><td class=""><div class="angel hippo ">🦛</div></td><td class=""><div class="angel hippo ">🦛</div></td><td class=" divinely_inspired "><div class="angel hippo ">🦛</div></td><td class=""><div class="angel hippo ">🦛</div></td><td class=""><div class=""></div></td></tr></table>-->
+	<!-- <table class="board"><tr><td class=""><div class=""></div></td><td class=""><div class="angel baboon ">🐒</div></td><td class=" divinely_inspired "><div class="angel baboon ">🐒</div>
+	
+	<div class="mortal baboon ">🐒</div>
+	
+	<div class="mortal hippo ">🦛</div>
+	
+	<td class=" divinely_inspired ">
+		<div class="angel hippo ">
+		🦛
+		</div>
+	</td>
+	
+	-->
 </template>
 <script>
 	import Square from './Square.vue';
