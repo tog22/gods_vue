@@ -3,8 +3,10 @@
 		<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
 			<Square 
 				v-for="(square, col_index) in row" 
-				:key="'c'+col_index"
-				:square="square"
+					:key="'c'+col_index"
+					:square="square"
+					:row="row_index"
+					:col="col_index"
 			/>
 			<!--<Square/>-->
 		</tr>

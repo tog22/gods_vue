@@ -11,6 +11,14 @@
 			square: {
 				type: Object,
 				default: null
+			},
+			row: {
+				type: Number,
+				default: null
+			},
+			col: {
+				type: Number,
+				default: null
 			}
 		},
 		data() {
@@ -22,7 +30,7 @@
 		},
 		methods: {
 			click: function(event) {
-				alert('sq clk');
+				// alert('sq clk');
 			}
 		},
 		mounted() {
