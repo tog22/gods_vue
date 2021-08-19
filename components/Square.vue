@@ -31,6 +31,7 @@
 		methods: {
 			click: function(event) {
 				// alert('sq clk');
+				this.$emit('square_click_emission', this.row, this.col);
 			}
 		},
 		mounted() {

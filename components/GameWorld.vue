@@ -7,6 +7,7 @@
 					:square="square"
 					:row="row_index"
 					:col="col_index"
+					@square_click_emission="square_click"
 			/>
 			<!--<Square/>-->
 		</tr>
@@ -18,8 +19,15 @@
 	import Square from './Square.vue';
 	
 	export default {
-		props: {
-			
+		components: {
+			Square
+		},
+		props: {	
+		},
+		methods: {
+			square_click(row, col) {
+				alert('Square clicked: '+row+'-'+col);
+			}
 		},
 		data() {
 			return {
@@ -314,9 +322,6 @@
 					]
 				]
 			};
-		},
-		components: {
-			Square
 		}
 	};
 </script>
