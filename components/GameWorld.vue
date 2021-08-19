@@ -12,7 +12,7 @@
 	<!--
 		<tr v-for="(row, row_index) in sotw" :key="'r'+row_index">
 			<div v-for="(col, col_index) in row" :key="'c'+col_index">
-				{{col[0]}}ff
+				{{col[0]}}
 			</div>
 			<Square/>
 			<Square/>
@@ -87,7 +87,13 @@
 		</tr>
 	</table>	
 	-->
-	<!-- <table class="board"><tr><td class=""><div class=""></div></td><td class=""><div class="angel baboon ">🐒</div></td><td class=" divinely_inspired "><div class="angel baboon ">🐒</div>
+	<!-- <table class="board"><tr>
+	
+	<td class="">
+		<div class=""></div>
+	</td>
+	
+	<td class=""><div class="angel baboon ">🐒</div></td><td class=" divinely_inspired "><div class="angel baboon ">🐒</div>
 	
 	<div class="mortal baboon ">🐒</div>
 	
