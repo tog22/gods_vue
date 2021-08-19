@@ -99,15 +99,294 @@
 		data() {
 			return {
 				sotw: [
-					[null,['angel','red',null],['angel','red','divinely inspired'],['angel','red',null],['angel','red',null],null],
-					[null,['mortal','red',null],['mortal','red',null],['mortal','red',null],['mortal','red',null],null],
-					[null,null,null,null,null,null],
-					[null,null,null,null,null,null],
-					[null,null,null,null,null,null],
-					[null,null,null,null,null,null],
-					[null,null,null,null,null,null],
-					[null,['mortal','black',null],['mortal','black',null],['mortal','black',null],['mortal','black',null],null],
-					[null,['angel','black',null],['angel','black',null],['angel','black','divinely inspired'],['angel','black',null],null]
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'red',
+							divinely_inspired: true
+						},
+						{
+							occupant: 'angel',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'red',
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'mortal',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: 'angel',
+							side: 'black',
+							divinely_inspired: true
+						},
+						{
+							occupant: 'angel',
+							side: 'black',
+							divinely_inspired: false
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false
+						}
+					]
 				]
 			};
 		},
