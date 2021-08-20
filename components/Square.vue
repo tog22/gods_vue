@@ -1,7 +1,7 @@
 <template>
-	<td :class="square_class" v-on:click="click">
+	<td :class="square_class_computed_version" v-on:click="click">
 		<div :class="occupant_class">
-			{{occupant_image}}{{is_selected}}
+			{{occupant_image}}
 		</div>
 	</td>
 </template>
@@ -21,8 +21,8 @@
 				default: null
 			},
 			is_selected: {
-				type: Boolean,
-				default: false
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -31,6 +31,18 @@
 				occupant_class: '',
 				square_class: ''
 			};
+		},
+		computed: {
+			square_class_computed_version: function() {
+				let ret = '';
+				if (this.square.divinely_inspired) {
+					ret += ' divinely_inspired ';
+				}
+				if (this.is_selected) {
+					ret += ' selected ';
+				}
+				return ret;
+			}
 		},
 		methods: {
 			click: function() {
@@ -56,9 +68,6 @@
 				case 'angel':
 					this.occupant_class += ' angel ';
 					break;
-			}
-			if (this.square.divinely_inspired) {
-				this.square_class = ' divinely_inspired ';
 			}
 		}
 	};

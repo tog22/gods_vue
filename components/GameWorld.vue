@@ -7,7 +7,7 @@
 					:square="square"
 					:row="row_index"
 					:col="col_index"
-					:is_selected="sotw[row_index][col_index].divinely_inspired"
+					:is_selected="sotw[row_index][col_index].is_selected"
 					@square_click_emission="square_click"
 			/>
 			<!--<Square/>-->
@@ -37,7 +37,7 @@
 					
 					// Show that it's selected - DUMMY EG
 					
-					this.sotw[row][col].divinely_inspired = true;
+					this.sotw[row][col].is_selected = 'selected ';
 				}
 				if (clicked.occupant === null) {
 					return;
@@ -101,288 +101,342 @@
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'red',
-							divinely_inspired: true
+							divinely_inspired: true,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 					],
 					[
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'red',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
-						},
-					],
-					[
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 					],
 					[
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
-						},
-					],
-					[
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 					],
 					[
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
-						},
-					],
-					[
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 					],
 					[
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 					],
 					[
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'black',
-							divinely_inspired: true
+							divinely_inspired: true,
+							is_selected: ''
 						},
 						{
 							occupant: 'angel',
 							side: 'black',
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						},
 						{
 							occupant: null,
 							side: null,
-							divinely_inspired: false
+							divinely_inspired: false,
+							is_selected: ''
 						}
 					]
 				]
