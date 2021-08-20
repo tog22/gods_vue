@@ -1,7 +1,7 @@
 <template>
-	<td :class="inspiration_class" v-on:click="click">
+	<td :class="square_class" v-on:click="click">
 		<div :class="occupant_class">
-			{{occupant_image}}
+			{{occupant_image}}{{is_selected}}
 		</div>
 	</td>
 </template>
@@ -19,18 +19,21 @@
 			col: {
 				type: Number,
 				default: null
+			},
+			is_selected: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
 			return {
 				occupant_image: '',
 				occupant_class: '',
-				inspiration_class: ''
+				square_class: ''
 			};
 		},
 		methods: {
-			click: function(event) {
-				// alert('sq clk');
+			click: function() {
 				this.$emit('square_click_emission', this.row, this.col);
 			}
 		},
@@ -54,9 +57,8 @@
 					this.occupant_class += ' angel ';
 					break;
 			}
-			console.log(this.occupant_image);
 			if (this.square.divinely_inspired) {
-				this.inspiration_class = 'divinely_inspired';
+				this.square_class = ' divinely_inspired ';
 			}
 		}
 	};
