@@ -69,12 +69,7 @@
 					
 					// Deselect the square moved from
 					
-					let selstate;
-					selstate = this.sotw[this.selected_row][this.selected_col].is_selected;
-					alert("Initially selected square's .is_selected property: "+selstate);
 					this.sotw[this.selected_row][this.selected_col].is_selected = '';
-					selstate = this.sotw[this.selected_row][this.selected_col].is_selected;
-					alert("Initially selected square's .is_selected property, after change: "+selstate);
 					
 					// AFTER all other deselection steps, unset the world's selected_row/col state
 					
