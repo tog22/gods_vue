@@ -30,21 +30,58 @@
 				
 				let clicked = this.sotw[row][col];
 				
-				if (!this.selected_row) {
+				let is_something_selected;
+				if (this.selected_row !== null && this.selected_col) {
+					is_something_selected = true;
+				} else {
+					is_something_selected = false;
+				}
+				
+				if (!is_something_selected) {
+					
+					// Check if the active side has a piece to select
+					
+					if (clicked.occupant === null) {
+						return;
+					}
+					if (clicked.side !== this.current_player) {
+						alert ("It's not this player's turn");
+						return;
+					}
+					
+					// If so, select it
 					
 					this.selected_row = row;
 					this.selected_col = col;
 					
-					// Show that it's selected - DUMMY EG
-					
 					this.sotw[row][col].is_selected = 'selected ';
-				}
-				if (clicked.occupant === null) {
-					return;
-				}
-				if (clicked.side !== this.current_player) {
-					alert ("It's not this player's turn");
-					return;
+					
+				} else if (is_something_selected) {
+					
+					// Check if it's a valid move
+					
+					let target_row = row;
+					let target_col = col;
+					alert('Trying to move to '+row+'-'+col);
+					
+					// If so, do it and deselect the square moved form
+					
+					
+					// Deselect the square moved from
+					
+					let selstate;
+					selstate = this.sotw[this.selected_row][this.selected_col].is_selected;
+					alert("Initially selected square's .is_selected property: "+selstate);
+					this.sotw[this.selected_row][this.selected_col].is_selected = '';
+					selstate = this.sotw[this.selected_row][this.selected_col].is_selected;
+					alert("Initially selected square's .is_selected property, after change: "+selstate);
+					
+					// AFTER all other deselection steps, unset the world's selected_row/col state
+					
+					this.selected_row = null;
+					this.selected_col = null;
+					
+					
 				}
 				
 				this.is_valid_move(row,col,row+1,col+1);

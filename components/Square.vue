@@ -1,7 +1,7 @@
 <template>
 	<td :class="square_class_computed_version" v-on:click="click">
 		<div :class="occupant_class">
-			{{occupant_image}}
+			{{occupant_image}}{{is_selected}}
 		</div>
 	</td>
 </template>
