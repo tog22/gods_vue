@@ -2,6 +2,7 @@
 	<td :class="square_class_computed_version" v-on:click="click">
 		<div :class="occupant_class">
 			{{occupant_image}}
+			 {{refresh_trigger_occupant}} 
 		</div>
 	</td>
 </template>
@@ -21,6 +22,10 @@
 				default: null
 			},
 			is_selected: {
+				type: String,
+				default: ''
+			},
+			refresh_trigger_occupant: {
 				type: String,
 				default: ''
 			}
