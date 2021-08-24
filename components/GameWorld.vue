@@ -66,14 +66,20 @@
 				// 2) MOVING SELECTED PIECES
 				} else if (is_something_selected) {
 					
-					// Check if it's a valid move
-					
 					let to_row = row;
 					let to_col = col;
 					let from_row = this.selected_row;
 					let from_col = this.selected_col;
 					
-					// Calculate the deltas for later use
+					// Re-clicking the selected piece, to unselect it
+					
+					if (to_row === from_row && to_col && from_col) {
+						this.unselect_piece();
+					}
+					
+					
+					// Check if it's a valid move
+					// ...starting by calculating the deltas for later use
 					if (to_row > from_row) {
 						this.row_delta = to_row - from_row;
 					} else {
@@ -99,22 +105,14 @@
 							selected.side = null;
 							clicked.occupant = 'mortal';
 							clicked.side = this.current_player;
-						} else if (selected.occupant === 'angel') {
-							
+						} else if (selected.occupant === 'angel'){
+							selected.occupant = null;
+							selected.side = null;
+							clicked.occupant = 'angel';
+							clicked.side = this.current_player;
 						}
 						
-						// Deselect the square moved from
-						
-						this.sotw[this.selected_row][this.selected_col].is_selected = '';
-						
-						// AFTER all other deselection steps, unset the world's selected_row/col state
-						
-						this.selected_row = null;
-						this.selected_col = null;
-						
-						// Reset the deltas for neatness
-						this.row_delta = null;
-						this.col_delta = null;
+						this.unselect_piece();
 					
 					} else {
 						alert("Not a valid move");
@@ -154,7 +152,9 @@
 							return true;
 						}
 					} else if (selected.occupant === 'angel') {
-						
+						if (this.is_along_a_straight_line(from_row, from_col, to_row, to_col)) {
+							return true;
+						}
 					}
 				}
 				
@@ -184,6 +184,54 @@
 				} else {
 					return false;
 				}
+			},
+			is_along_a_straight_line(from_row, from_col, to_row, to_col) {
+				// Check if it's not a straight line
+				if (this.row_delta !== 0 && this.col_delta !== 0) {
+					return false;
+				}
+				// Check for pieces in between
+				if (this.row_delta > 0) {
+					let lowest_intermediate;
+					let highest_intermediate;
+					if (to_row > from_row) {
+						highest_intermediate = to_row - 1;
+						lowest_intermediate = from_row + 1;
+					} else {
+						highest_intermediate = from_row - 1;
+						lowest_intermediate = to_row + 1;
+					}
+					for (
+						let intermediate = lowest_intermediate;
+						intermediate <= highest_intermediate;
+						intermediate++
+					) {
+						alert(3);
+					}
+				} else if (this.col_delta > 0) {
+					
+				}
+			},
+			/***************************
+			****************************
+			**						  **
+			**	   UNSELECT PIECE     **
+			**						  **
+			****************************
+			***************************/
+			unselect_piece() {
+				// Deselect the square moved from
+				
+				this.sotw[this.selected_row][this.selected_col].is_selected = '';
+				
+				// AFTER all other deselection steps, unset the world's selected_row/col state
+				
+				this.selected_row = null;
+				this.selected_col = null;
+				
+				// Reset the deltas for neatness
+				this.row_delta = null;
+				this.col_delta = null;
 			}
 		},
 		data() {
