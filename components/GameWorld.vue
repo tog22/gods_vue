@@ -14,7 +14,7 @@
 			</tr>
 		</table>
 		<div class="info_bar">
-			<div class="current_player">
+			<div class="current_player" v-html="current_player_image">
 				Current player: {{current_player_image}}
 			</div>
 		</div>
@@ -636,9 +636,9 @@
 			current_player_image: function() {
 				switch (this.current_player) {
 					case 1:
-						return '🐒';
+						return '<span class="cpi baboon">🐒</span>';
 					case 2:
-						return '🦛';
+						return '<span class="cpi hippo">🦛</span>';
 				}
 			}
 		}
