@@ -8,7 +8,6 @@
 					:row="row_index"
 					:col="col_index"
 					:is_selected="sotw[row_index][col_index].is_selected"
-					:refresh_trigger_occupant="sotw[row_index][col_index].occupant"
 					@square_click_emission="square_click"
 			/>
 		</tr>
@@ -96,7 +95,6 @@
 							selected.divinely_inspired = false;
 							clicked.divinely_inspired = true;
 						} else if (selected.occupant === 'mortal') {
-							alert(1);
 							selected.occupant = null;
 							selected.side = null;
 							clicked.occupant = 'mortal';

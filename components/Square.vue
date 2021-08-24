@@ -1,8 +1,7 @@
 <template>
-	<td :class="square_class_computed_version" v-on:click="click">
+	<td :class="square_class" v-on:click="click">
 		<div :class="occupant_class">
 			{{occupant_image}}
-			 {{refresh_trigger_occupant}} 
 		</div>
 	</td>
 </template>
@@ -32,19 +31,48 @@
 		},
 		data() {
 			return {
-				occupant_image: '',
-				occupant_class: '',
-				square_class: ''
 			};
 		},
 		computed: {
-			square_class_computed_version: function() {
+			square_class: function() {
 				let ret = '';
 				if (this.square.divinely_inspired) {
 					ret += ' divinely_inspired ';
 				}
 				if (this.is_selected) {
 					ret += ' selected ';
+				}
+				return ret;
+			},
+			occupant_class: function() {
+				let ret = '';
+				switch (this.square.side) {
+					case 'red':
+						ret = ' baboon ';
+						break;
+					case 'black':
+						ret = ' hippo ';
+						break;
+				}
+				switch (this.square.occupant) {
+					case 'mortal':
+						ret += ' mortal ';
+						break;
+					case 'angel':
+						ret += ' angel ';
+						break;
+				}
+				return ret;
+			},
+			occupant_image: function() {
+				let ret = '';
+				switch (this.square.side) {
+					case 'red':
+						ret = '🐒';
+						break;
+					case 'black':
+						ret = '🦛';
+						break;
 				}
 				return ret;
 			}
@@ -55,25 +83,7 @@
 			}
 		},
 		mounted() {
-			// <div class="angel baboon ">🐒</div>
-			switch (this.square.side) {
-				case 'red':
-					this.occupant_class = ' baboon ';
-					this.occupant_image = '🐒';
-					break;
-				case 'black':
-					this.occupant_class = ' hippo ';
-					this.occupant_image = '🦛';
-					break;
-			}
-			switch (this.square.occupant) {
-				case 'mortal':
-					this.occupant_class += ' mortal ';
-					break;
-				case 'angel':
-					this.occupant_class += ' angel ';
-					break;
-			}
+			
 		}
 	};
 </script>
