@@ -14,8 +14,9 @@
 			</tr>
 		</table>
 		<div class="info_bar">
-			<div class="current_player" v-html="current_player_image">
-				Current player: {{current_player_image}}
+			<div class="current_player">
+				Current player: <span v-html="current_player_image"></span>
+				<!--current_player_image() is a computed property-->
 			</div>
 		</div>
 	</div>
