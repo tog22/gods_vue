@@ -37,7 +37,7 @@
 				let clicked = this.sotw[row][col];
 				
 				let is_something_selected;
-				if (this.selected_row !== null && this.selected_col) {
+				if (this.selected_row !== null && this.selected_col !== null) {
 					is_something_selected = true;
 				} else {
 					is_something_selected = false;
@@ -73,7 +73,7 @@
 					
 					// Re-clicking the selected piece, to unselect it
 					
-					if (to_row === from_row && to_col && from_col) {
+					if (to_row === from_row && to_col === from_col) {
 						this.unselect_piece();
 					}
 					
@@ -194,22 +194,41 @@
 				if (this.row_delta > 0) {
 					let lowest_intermediate;
 					let highest_intermediate;
-					if (to_row > from_row) {
+					if (to_row > (from_row+1)) {
 						highest_intermediate = to_row - 1;
 						lowest_intermediate = from_row + 1;
-					} else {
+					} else if (from_row > (to_row+1)) {
 						highest_intermediate = from_row - 1;
 						lowest_intermediate = to_row + 1;
+					} else { // It's just moving 1 square
+						return true;
 					}
 					for (
 						let intermediate = lowest_intermediate;
 						intermediate <= highest_intermediate;
 						intermediate++
 					) {
-						alert(3);
+						return true;
 					}
 				} else if (this.col_delta > 0) {
-					
+					let lowest_intermediate;
+					let highest_intermediate;
+					if (to_col > (from_col+1)) {
+						highest_intermediate = to_col - 1;
+						lowest_intermediate = from_col + 1;
+					} else if (from_col > (to_col+1)) {
+						highest_intermediate = from_col - 1;
+						lowest_intermediate = to_col + 1;
+					} else { // It's just moving 1 square
+						return true;
+					}
+					for (
+						let intermediate = lowest_intermediate;
+						intermediate <= highest_intermediate;
+						intermediate++
+					) {
+						return true;
+					}
 				}
 			},
 			/***************************
