@@ -55,5 +55,34 @@ body {
 */
 
 .selected {
-	background-color: #66FFCC !important;
+	animation: pulse_selected 4s ease-in-out infinite alternate;
 }
+
+.selected.divinely_inspired {
+	animation: pulse_selected_inspired 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulse_selected {
+	0% {
+		background-color: transparent;
+	}
+	50% {
+		background-color: #66FFCC;
+	}
+	100% {
+		background-color: transparent;
+	}
+}
+
+@keyframes pulse_selected_inspired {
+	0% {
+		background-color: #f2d773;
+	}
+	50% {
+		background-color: transparent;
+	}
+	100% {
+		background-color: #f2d773;
+	}
+}
+
