@@ -47,10 +47,10 @@
 			occupant_class: function() {
 				let ret = '';
 				switch (this.square.side) {
-					case 'red':
+					case 1:
 						ret = ' baboon ';
 						break;
-					case 'black':
+					case 2:
 						ret = ' hippo ';
 						break;
 				}
@@ -67,10 +67,10 @@
 			occupant_image: function() {
 				let ret = '';
 				switch (this.square.side) {
-					case 'red':
+					case 1:
 						ret = '🐒';
 						break;
-					case 'black':
+					case 2:
 						ret = '🦛';
 						break;
 				}

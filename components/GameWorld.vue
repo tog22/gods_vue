@@ -1,17 +1,24 @@
 <template>
-	<table class="board">
-		<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
-			<Square 
-				v-for="(square, col_index) in row" 
-					:key="'c'+col_index"
-					:square="square"
-					:row="row_index"
-					:col="col_index"
-					:is_selected="sotw[row_index][col_index].is_selected"
-					@square_click_emission="square_click"
-			/>
-		</tr>
-	</table>
+	<div class="game_world_root">
+		<table class="board">
+			<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
+				<Square 
+					v-for="(square, col_index) in row" 
+						:key="'c'+col_index"
+						:square="square"
+						:row="row_index"
+						:col="col_index"
+						:is_selected="sotw[row_index][col_index].is_selected"
+						@square_click_emission="square_click"
+				/>
+			</tr>
+		</table>
+		<div class="info_bar">
+			<div class="current_player">
+				Current player: {{current_player_image}}
+			</div>
+		</div>
+	</div>
 </template>
 <script>
 	import '@/assets/styles.css';
@@ -98,14 +105,17 @@
 						// Make the move
 						
 						if (selected.divinely_inspired) {
+							this.inspiration_has_moved = true;
 							selected.divinely_inspired = false;
 							clicked.divinely_inspired = true;
 						} else if (selected.occupant === 'mortal') {
+							this.piece_has_moved = true;
 							selected.occupant = null;
 							selected.side = null;
 							clicked.occupant = 'mortal';
 							clicked.side = this.current_player;
 						} else if (selected.occupant === 'angel'){
+							this.piece_has_moved = true;
 							selected.occupant = null;
 							selected.side = null;
 							clicked.occupant = 'angel';
@@ -113,6 +123,20 @@
 						}
 						
 						this.unselect_piece();
+						
+						// Switch to the other player if appropriate
+						
+						if (this.piece_has_moved && this.inspiration_has_moved) {
+							alert ("Switching to next player")
+							switch (this.current_player) {
+								case 1:
+									this.current_player = 2;
+									break;
+								case 2:
+									this.current_player = 1;
+									break;
+							}
+						}
 					
 					} else {
 						alert("Not a valid move");
@@ -140,7 +164,7 @@
 				
 				//  1) MOVING MORTALS & ANGELS
 				
-				if (!selected.divinely_inspired && !this.player_has_moved) {
+				if (!selected.divinely_inspired && !this.piece_has_moved) {
 					if (dest.occupant !== null) {
 						return false;
 					}
@@ -255,8 +279,8 @@
 		},
 		data() {
 			return {
-				current_player: 'red',
-				player_has_moved: false,
+				current_player: 1,
+				piece_has_moved: false,
 				inspiration_has_moved: false,
 				selected_row: null,
 				selected_col: null,
@@ -272,25 +296,25 @@
 						},
 						{
 							occupant: 'angel',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'red',
+							side: 1,
 							divinely_inspired: true,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
@@ -310,63 +334,25 @@
 						},
 						{
 							occupant: 'mortal',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'red',
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'red',
-							divinely_inspired: false,
-							is_selected: ''
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false,
-							is_selected: ''
-						},
-					],
-					[
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false,
-							is_selected: ''
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false,
-							is_selected: ''
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false,
-							is_selected: ''
-						},
-						{
-							occupant: null,
-							side: null,
-							divinely_inspired: false,
-							is_selected: ''
-						},
-						{
-							occupant: null,
-							side: null,
+							side: 1,
 							divinely_inspired: false,
 							is_selected: ''
 						},
@@ -537,26 +523,64 @@
 							is_selected: ''
 						},
 						{
-							occupant: 'mortal',
-							side: 'black',
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'black',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'black',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'mortal',
-							side: 'black',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
@@ -576,25 +600,25 @@
 						},
 						{
 							occupant: 'angel',
-							side: 'black',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'black',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'black',
+							side: 2,
 							divinely_inspired: true,
 							is_selected: ''
 						},
 						{
 							occupant: 'angel',
-							side: 'black',
+							side: 2,
 							divinely_inspired: false,
 							is_selected: ''
 						},
@@ -607,6 +631,16 @@
 					]
 				]
 			};
+		},
+		computed: {
+			current_player_image: function() {
+				switch (this.current_player) {
+					case 1:
+						return '🐒';
+					case 2:
+						return '🦛';
+				}
+			}
 		}
 	};
 </script>

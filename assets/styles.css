@@ -1,10 +1,18 @@
+/*
+**	THE CORE ELEMENTS
+*/
+
 body {
 	background-color: white;
 }
 
-.intro {
-	margin-bottom: 4em; /* I love Alik & Papa & Mama */
+.game_world_root {
+	width: 340px;
 }
+
+/*
+**	THE BOARD
+*/
 
 .board {
 	border-collapse: collapse;
@@ -86,3 +94,15 @@ body {
 	}
 }
 
+/*
+**	THE INFO BAR
+*/
+
+.info_bar {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.current_player {
+	
+}
