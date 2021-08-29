@@ -16,7 +16,6 @@
 		<div class="info_bar">
 			<div class="current_player">
 				Current player: <span v-html="current_player_image"></span>
-				<!--current_player_image() is a computed property-->
 			</div>
 		</div>
 	</div>
