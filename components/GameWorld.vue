@@ -13,9 +13,16 @@
 				/>
 			</tr>
 		</table>
-		<div class="info_bar">
-			<div class="current_player">
-				Current player: <span v-html="current_player_image"></span>
+		<div id="info_bar">
+			<div id="item_flex_container">
+				<div class="current_player s_item">
+					<span v-html="current_player_image"></span>
+				</div>
+				<div class="next_turn s_item s_text_only">
+					<div class="s_text">
+						End Turn
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -127,7 +134,6 @@
 						// Switch to the other player if appropriate
 						
 						if (this.piece_has_moved && this.inspiration_has_moved) {
-							alert ("Switching to next player")
 							switch (this.current_player) {
 								case 1:
 									this.current_player = 2;
@@ -136,6 +142,12 @@
 									this.current_player = 1;
 									break;
 							}
+							this.piece_has_moved = false;
+							this.inspiration_has_moved = false;
+							this.selected_row = null;
+							this.selected_col = null;
+							this.row_delta = null;
+							this.col_delta = null;
 						}
 					
 					} else {

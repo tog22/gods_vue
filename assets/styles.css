@@ -2,10 +2,14 @@
 **	THE CORE ELEMENTS
 */
 
+#info_bar, #info_bar * {
+	box-sizing: border-box;
+}
+
 body {
 	background-color: white;
 	
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+	font-family: Raleway, Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -13,6 +17,12 @@ body {
 .game_world_root {
 	width: 340px;
 }
+
+/* @font-face  {
+	font-family: 'Raleway';
+	src: url('/scaffolding/fonts/Raleway/Raleway-VariableFont_wght.ttf');
+} */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /*
 **	THE BOARD
@@ -102,19 +112,66 @@ body {
 **	THE INFO BAR
 */
 
-.info_bar {
+#info_bar {
 	text-align: center;
 	margin-top: 1em;
+	width: 100%;
+	display: flex;
+	
+	background: #7c98b3;
+	border-radius: 12px;
+	padding: 20px 20px;
 }
 
-.current_player {
+#info_bar #item_flex_container {
+	display: flex;
+	margin: 0 auto;
+}
+
+#info_bar .s_item {
+	display: inline-block;
+	background-color: #A7C4E0;
+	margin-right: 15px;
+	border-radius: 6px;
+	height: 40px;
+	padding: 3px 6px;
+	
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: column;
+	
+	color: white;
+}
+
+#info_bar .s_item .s_text {
+	font-size: 12px;
+	font-weight: 900;
+	text-transform: uppercase;
+}
+
+#info_bar .s_item.s_text_only {
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+#info_bar .s_item:last-child {
+	margin-right: 0;
+}
+
+#info_bar .current_player.s_item {
 	
 }
 
 .cpi.baboon {
 	font-size: 120%;
+	margin-right: 2px;
 }
 
 .cpi.hippo {
 	font-size: 170%;
+	margin-right: 2px;
+	
+	display: inline-block;
+	padding-bottom: 5px;
 }
