@@ -175,3 +175,31 @@ body {
 	display: inline-block;
 	padding-bottom: 5px;
 }
+
+.player_pulse {
+	animation: player_pulse 4s ease-in-out 1 0s;
+	animation-iteration-count: 1;
+}
+
+@keyframes pulse_selected {
+	0% {
+		background-color: #A7C4E0;
+	}
+	50% {
+		background-color: #E1EDF8;
+	}
+	100% {
+		background-color: #A7C4E0;
+	}
+}
+
+/* remove after playing with :
+
+$("#info_bar .current_player.s_item").on(
+	"transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
+	function() {
+		$(this).removeClass("player_pulse");
+	}
+);
+
+*/

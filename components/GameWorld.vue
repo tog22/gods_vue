@@ -18,7 +18,7 @@
 				<div class="current_player s_item">
 					<span v-html="current_player_image"></span>
 				</div>
-				<div class="next_turn s_item s_text_only">
+				<div class="next_turn s_item s_text_only" @click="end_turn">
 					<div class="s_text">
 						End Turn
 					</div>
@@ -131,23 +131,10 @@
 						
 						this.unselect_piece();
 						
-						// Switch to the other player if appropriate
+						// End turn/switch to the other player if appropriate
 						
 						if (this.piece_has_moved && this.inspiration_has_moved) {
-							switch (this.current_player) {
-								case 1:
-									this.current_player = 2;
-									break;
-								case 2:
-									this.current_player = 1;
-									break;
-							}
-							this.piece_has_moved = false;
-							this.inspiration_has_moved = false;
-							this.selected_row = null;
-							this.selected_col = null;
-							this.row_delta = null;
-							this.col_delta = null;
+							this.end_turn();
 						}
 					
 					} else {
@@ -285,6 +272,22 @@
 				this.selected_col = null;
 				
 				// Reset the deltas for neatness
+				this.row_delta = null;
+				this.col_delta = null;
+			},
+			end_turn() {
+				switch (this.current_player) {
+					case 1:
+						this.current_player = 2;
+						break;
+					case 2:
+						this.current_player = 1;
+						break;
+				}
+				this.piece_has_moved = false;
+				this.inspiration_has_moved = false;
+				this.selected_row = null;
+				this.selected_col = null;
 				this.row_delta = null;
 				this.col_delta = null;
 			}
