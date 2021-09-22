@@ -65,12 +65,24 @@
 					if (clicked.occupant === null) {
 						return;
 					}
+					
 					if (clicked.side !== this.current_player) {
 						alert ("It's not this player's turn");
+						// ↑ Ideally make the turn indicator flash red instead
 						return;
 					}
 					
-					// If so, select it
+					// Check if the relevant thing (a mortal/angel, or divine inspiration) hasn't moved yet
+					
+					if (clicked.divinely_inspired && this.inspiration_has_moved) {
+						return;
+					}
+					
+					if (!clicked.divinely_inspired && this.piece_has_moved) {
+						return;
+					}
+					
+					// If conditions above are met, make the selection
 					
 					this.selected_row = row;
 					this.selected_col = col;
