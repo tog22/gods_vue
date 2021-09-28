@@ -187,7 +187,7 @@
 							return true;
 						}
 					} else if (selected.occupant === 'angel') {
-						if (this.is_along_a_straight_line(from_row, from_col, to_row, to_col)) {
+						if (this.is_along_clear_straight_line(from_row, from_col, to_row, to_col)) {
 							return true;
 						}
 					}
@@ -199,7 +199,7 @@
 					if (!dest.side === this.current_player) {
 						return false;
 					}
-					if (this.is_adjacent_non_diagonally(from_row, from_col, to_row, to_col)) {
+					if (this.is_along_solid_straight_line(from_row, from_col, to_row, to_col)) {
 						return true;
 					}
 				}
@@ -220,7 +220,7 @@
 					return false;
 				}
 			},
-			is_along_a_straight_line(from_row, from_col, to_row, to_col) {
+			is_along_clear_straight_line(from_row, from_col, to_row, to_col) {
 				// Check if it's not a straight line
 				if (this.row_delta !== 0 && this.col_delta !== 0) {
 					return false;
@@ -243,8 +243,12 @@
 						intermediate <= highest_intermediate;
 						intermediate++
 					) {
-						return true;
+						let intermediate_square = this.sotw[intermediate][from_col];
+						if (intermediate_square.occupant) {
+							return false;
+						}
 					}
+					return true;
 				} else if (this.col_delta > 0) {
 					let lowest_intermediate;
 					let highest_intermediate;
@@ -262,8 +266,66 @@
 						intermediate <= highest_intermediate;
 						intermediate++
 					) {
+						let intermediate_square = this.sotw[from_row][intermediate];
+						if (intermediate_square.occupant) {
+							return false;
+						}
+					}
+					return true;
+				}
+			},
+			is_along_solid_straight_line(from_row, from_col, to_row, to_col) {
+				// Check if it's not a straight line
+				if (this.row_delta !== 0 && this.col_delta !== 0) {
+					return false;
+				}
+				// Check for pieces in between
+				if (this.row_delta > 0) {
+					let lowest_intermediate;
+					let highest_intermediate;
+					if (to_row > (from_row+1)) {
+						highest_intermediate = to_row - 1;
+						lowest_intermediate = from_row + 1;
+					} else if (from_row > (to_row+1)) {
+						highest_intermediate = from_row - 1;
+						lowest_intermediate = to_row + 1;
+					} else { // It's just moving 1 square
 						return true;
 					}
+					for (
+						let intermediate = lowest_intermediate;
+						intermediate <= highest_intermediate;
+						intermediate++
+					) {
+						let intermediate_square = this.sotw[intermediate][from_col];
+						if (!intermediate_square.occupant) {
+							return false;
+						}
+					}
+					return true;
+				} else if (this.col_delta > 0) {
+					let lowest_intermediate;
+					let highest_intermediate;
+					if (to_col > (from_col+1)) {
+						highest_intermediate = to_col - 1;
+						lowest_intermediate = from_col + 1;
+					} else if (from_col > (to_col+1)) {
+						highest_intermediate = from_col - 1;
+						lowest_intermediate = to_col + 1;
+					} else { // It's just moving 1 square
+						return true;
+					}
+					for (
+						let intermediate = lowest_intermediate;
+						intermediate <= highest_intermediate;
+						intermediate++
+					) {
+						let intermediate_square = this.sotw[from_row][intermediate];
+						if (!intermediate_square.occupant) {
+							return false;
+						}
+					}
+					return true;
 				}
 			},
 			/***************************
@@ -298,6 +360,7 @@
 				}
 				this.piece_has_moved = false;
 				this.inspiration_has_moved = false;
+				this.sotw[this.selected_row][this.selected_col].is_selected = '';
 				this.selected_row = null;
 				this.selected_col = null;
 				this.row_delta = null;
