@@ -23,10 +23,6 @@
 			is_selected: {
 				type: String,
 				default: ''
-			},
-			refresh_trigger_occupant: {
-				type: String,
-				default: ''
 			}
 		},
 		data() {
