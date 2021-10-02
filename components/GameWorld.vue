@@ -28,6 +28,7 @@
 	</div>
 </template>
 <script>
+	import $ from 'jquery'
 	import '@/assets/styles.css';
 	
 	import Square from './Square.vue';
@@ -360,11 +361,15 @@
 				}
 				this.piece_has_moved = false;
 				this.inspiration_has_moved = false;
-				this.sotw[this.selected_row][this.selected_col].is_selected = '';
+				if (this.selected_row && this.selected_col) {
+					this.sotw[this.selected_row][this.selected_col].is_selected = '';
+				}
 				this.selected_row = null;
 				this.selected_col = null;
 				this.row_delta = null;
 				this.col_delta = null;
+				// Pulse animation is added in computed property current_player_image 
+				/// (Adding it with jQuery here doesn't work as it then gets overridden there)
 			}
 		},
 		data() {
@@ -726,7 +731,7 @@
 			current_player_image: function() {
 				switch (this.current_player) {
 					case 1:
-						return '<span class="cpi baboon">🐒</span>';
+						return '<span class="cpi baboon player_pulse">🐒</span>';
 					case 2:
 						return '<span class="cpi hippo">🦛</span>';
 				}

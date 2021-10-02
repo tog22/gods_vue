@@ -178,7 +178,19 @@ body {
 
 .player_pulse {
 	animation: player_pulse 4s ease-in-out 1 0s;
-	animation-iteration-count: 1;
+	animation-iteration-count: 100;
+}
+
+@keyframes player_pulse {
+	0% {
+		background-color: #A7C4E0;
+	}
+	50% {
+		background-color: red;
+	}
+	100% {
+		background-color: #A7C4E0;
+	}
 }
 
 @keyframes pulse_selected {
