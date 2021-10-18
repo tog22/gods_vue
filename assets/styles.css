@@ -130,6 +130,27 @@ body {
 
 #info_bar .s_item {
 	display: inline-block;
+	background-color: #A7C4E0;
+	margin-right: 15px;
+	border-radius: 6px;
+	height: 40px;
+	padding: 3px 6px;
+	
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: column;
+	
+	color: white;
+}
+
+/* !STYLES FOR NEW TURN PULSE (PARTWAY DONE)
+
+GameWorld.vue changes are at https://github.com/tog22/gods_vue/commit/f14faff612692f26938461902f6907023e335d8f
+
+
+#info_bar .s_item {
+	display: inline-block;
 	
 	display: flex;
 	justify-content: center;
@@ -149,6 +170,8 @@ body {
 	height: 40px;
 	padding: 3px 6px;
 }
+*/
+
 
 #info_bar .s_item .s_text {
 	font-size: 12px;
