@@ -16,10 +16,11 @@
 		<div id="info_bar">
 			<div id="item_flex_container">
 				<div class="current_player s_item">
-					<span v-html="current_player_image"></span>
+					<div v-html="current_player_image">
+					</div>
 				</div>
 				<div class="next_turn s_item s_text_only" @click="end_turn">
-					<div class="s_text">
+					<div class="s_text  s_rounded">
 						End Turn
 					</div>
 				</div>
@@ -731,9 +732,9 @@
 			current_player_image: function() {
 				switch (this.current_player) {
 					case 1:
-						return '<span class="cpi baboon player_pulse">🐒</span>';
+						return '<div class="cpi baboon s_rounded">🐒</div>';
 					case 2:
-						return '<span class="cpi hippo">🦛</span>';
+						return '<div class="cpi hippo s_rounded">🦛</div>';
 				}
 			}
 		}

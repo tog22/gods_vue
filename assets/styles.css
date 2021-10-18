@@ -130,11 +130,6 @@ body {
 
 #info_bar .s_item {
 	display: inline-block;
-	background-color: #A7C4E0;
-	margin-right: 15px;
-	border-radius: 6px;
-	height: 40px;
-	padding: 3px 6px;
 	
 	display: flex;
 	justify-content: center;
@@ -142,6 +137,17 @@ body {
 	flex-direction: column;
 	
 	color: white;
+}
+
+#info_bar .s_item .s_rounded {
+	display: table-cell;
+	vertical-align: middle;
+	
+	background-color: #A7C4E0;
+	margin-right: 15px;
+	border-radius: 6px;
+	height: 40px;
+	padding: 3px 6px;
 }
 
 #info_bar .s_item .s_text {
@@ -186,7 +192,7 @@ body {
 		background-color: #A7C4E0;
 	}
 	50% {
-		background-color: red;
+		background-color: #B4D4F2;
 	}
 	100% {
 		background-color: #A7C4E0;
