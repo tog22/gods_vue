@@ -1,27 +1,43 @@
 <template>
-<div class="game_world_root">
-	<table class="board">
-		<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
-			<Square 
-				v-for="(square, col_index) in row" 
-					:key="'c'+col_index"
-					:square="square"
-					:row="row_index"
-					:col="col_index"
-					:is_selected="sotw[row_index][col_index].is_selected"
-					@square_click_emission="square_click"
-			/>
-		</tr>
-	</table>
-	<div id="info_bar">
-		<div id="item_flex_container">
-			<div class="current_player s_item">
-				<span v-html="current_player_image"></span>
-			</div>
-			<div class="next_turn s_item s_text_only" @click="end_turn">
-				<div class="s_text">
-					End Turn
+<div class="game_world_root" :class="[is_in_dev, which_screen]">
+	<div id="active_game">
+		<table class="board">
+			<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
+				<Square 
+					v-for="(square, col_index) in row" 
+						:key="'c'+col_index"
+						:square="square"
+						:row="row_index"
+						:col="col_index"
+						:is_selected="sotw[row_index][col_index].is_selected"
+						@square_click_emission="square_click"
+				/>
+			</tr>
+		</table>
+		<div id="info_bar">
+			<div id="item_flex_container">
+				<div class="current_player s_item">
+					<span v-html="current_player_image"></span>
 				</div>
+				<div class="next_turn s_item s_text_only" @click="end_turn">
+					<div class="s_text">
+						End Turn
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="won_game">
+		<div id="win_text">
+			<div id="victory">
+				Victory
+			</div>
+			<div id="type_of_victory" v-html="type_of_victory">
+			</div>
+			<div id="guide_after_victory">
+				<a href=".">
+					Play again
+				</a>
 			</div>
 		</div>
 	</div>
@@ -32,6 +48,11 @@ import $ from 'jquery'
 import '@/assets/styles.css';
 
 import Square from './Square.vue';
+
+let l = function (to_log) { 
+	console.log(to_log) 
+}
+
 
 export default {
 	components: {
@@ -125,24 +146,31 @@ export default {
 					// Make the move
 					
 					if (selected.divinely_inspired) {
-						this.inspiration_has_moved = true;
-						selected.divinely_inspired = false;
-						clicked.divinely_inspired = true;
+						
+						this.inspiration_has_moved = true
+						selected.divinely_inspired = false
+						clicked.divinely_inspired = true
+						this.check_for_reaching_heartland(clicked)
+						
 					} else if (selected.occupant === 'mortal') {
-						this.piece_has_moved = true;
-						selected.occupant = null;
-						selected.side = null;
-						clicked.occupant = 'mortal';
-						clicked.side = this.current_player;
+						
+						this.piece_has_moved = true
+						selected.occupant = null
+						selected.side = null
+						clicked.occupant = 'mortal'
+						clicked.side = this.current_player
+						this.check_for_trap(to_row, to_col)
+						
 					} else if (selected.occupant === 'angel'){
-						this.piece_has_moved = true;
-						selected.occupant = null;
-						selected.side = null;
-						clicked.occupant = 'angel';
-						clicked.side = this.current_player;
+						this.piece_has_moved = true
+						selected.occupant = null
+						selected.side = null
+						clicked.occupant = 'angel'
+						clicked.side = this.current_player
+						this.check_for_trap(to_row, to_col)
+						
 					}
-					
-					this.unselect_piece();
+					this.unselect_piece()
 					
 					// End turn/switch to the other player if appropriate
 					
@@ -187,10 +215,16 @@ export default {
 					if (this.is_adjacent_diagonally()) {
 						return true;
 					}
+					if (this.is_hop(from_row, from_col, to_row, to_col)) {
+						return true;
+					} 
 				} else if (selected.occupant === 'angel') {
 					if (this.is_along_clear_straight_line(from_row, from_col, to_row, to_col)) {
 						return true;
 					}
+					if (this.is_hop(from_row, from_col, to_row, to_col)) {
+						return true;
+					} 
 				}
 			}
 			
@@ -329,16 +363,74 @@ export default {
 				return true;
 			}
 		},
+		is_hop(from_row, from_col, to_row, to_col) {
+			
+			if (this.row_delta > 0 && this.col_delta > 0) {
+				return false
+			}
+			
+			var intermediate_piece
+			var is_along_column
+			var col_direction
+			
+			if (this.row_delta === 2) {
+				var intermediate_row
+				if (to_row > from_row) {
+					intermediate_row = to_row - 1;
+				} else {
+					intermediate_row = from_row - 1;
+				}
+				intermediate_piece = this.sotw[intermediate_row][from_col]
+			} else if (this.col_delta === 2) {
+				is_along_column = true
+				var intermediate_col
+				if (to_col > from_col) {
+					intermediate_col = to_col - 1;
+					col_direction = 'down'
+				} else {
+					intermediate_col = from_col - 1;
+					col_direction = 'up'
+				}
+				intermediate_piece = this.sotw[from_row][intermediate_col]
+			} else {
+				return false
+			}
+			
+			switch (this.current_player) {
+				
+				case 1:
+					if (is_along_column && col_direction === 'up') {
+						return false
+					}
+					if (intermediate_piece.side === 2) {
+						return true
+					} else {
+						return false
+					}
+					break
+				case 2:
+				default:
+					if (is_along_column && col_direction === 'down') {
+						return false
+					}
+					if (intermediate_piece.side === 1) {
+						return true
+					} else {
+						return false
+					}
+					break
+			}
+			
+		},
 		/***************************
 		****************************
 		**						  **
-		**	   UNSELECT PIECE     **
+		**	   POST-TURN STUFF    **
 		**						  **
 		****************************
 		***************************/
 		unselect_piece() {
 			// Deselect the square moved from
-			
 			this.sotw[this.selected_row][this.selected_col].is_selected = '';
 			
 			// AFTER all other deselection steps, unset the world's selected_row/col state
@@ -349,6 +441,116 @@ export default {
 			// Reset the deltas for neatness
 			this.row_delta = null;
 			this.col_delta = null;
+		},
+		check_for_reaching_heartland(moved_to) {
+			if (moved_to.heartland === undefined) {
+				return
+			}
+			switch (moved_to.heartland) {
+				case 1:
+					if (this.current_player === 2) {
+						this.winner = 2
+						this.win_type = 'Heartland reached'
+					}
+					break;
+				case 2:
+				if (this.current_player === 1) {
+					this.winner = 1
+					this.win_type = 'Heartland reached'
+				}
+				break;
+			}
+		},
+		check_for_trap(to_row, to_col) {
+			
+			let squares_to_check_for_trap = this.squares_to_check_for_trap(to_row, to_col)
+			
+			let self = this.current_player
+			var opponent
+			if (self === 1) {
+				opponent = 2
+			} else {
+				opponent = 1
+			}
+			console.log('____________')
+			for (var square of squares_to_check_for_trap) {
+				console.log(square)
+				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
+					if (this.sotw[square.next_row][square.next_col].side === self) {
+						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
+							
+							this.winner = self
+							this.win_type = 'Faith extinguished'
+							this.sotw[square.adj_row][square.adj_col].divinely_inspired = false
+						}
+						this.sotw[square.adj_row][square.adj_col].occupant = null
+						this.sotw[square.adj_row][square.adj_col].side = null
+					}
+				}
+			}
+			
+		},
+		squares_to_check_for_trap(row, col) {
+			
+			var at_top = false
+			var at_bottom = false
+			var at_left = false
+			var at_right = false
+			
+			if (row === 0 || row === 1) {
+				at_top = true
+			}
+			if (row === 8 || row === 7) {
+				at_bottom = true
+			}
+			if (col === 5 || col === 4) {
+				at_right = true
+			}
+			if (col === 0 || col  === 1) {
+				at_left = true
+			}
+			
+			let squares_to_check_for_trap = []
+			// TODO - match new rules
+			if (!at_top) {
+				squares_to_check_for_trap.push({
+					direction: 'row',
+					adj_row: row - 1,
+					adj_col: col,
+					next_row: row - 2,
+					next_col: col
+				})
+			}
+			if (!at_bottom) {
+				squares_to_check_for_trap.push({
+					direction: 'row',
+					adj_row: row + 1,
+					adj_col: col,
+					next_row: row +2, 
+					next_col: col
+				})
+			}
+			if (!at_left) {
+				squares_to_check_for_trap.push({
+					direction: 'col',
+					adj_row: row,
+					adj_col: col - 1,
+					next_row: row,
+					next_col: col - 2
+				})
+			}
+			if (!at_right) {
+				squares_to_check_for_trap.push({
+					direction: 'col',
+					adj_row: row,
+					adj_col: col + 1,
+					next_row: row,
+					next_col: col + 2
+				})
+			}
+			
+			return squares_to_check_for_trap
+			
 		},
 		end_turn() {
 			switch (this.current_player) {
@@ -381,6 +583,365 @@ export default {
 			selected_col: null,
 			row_delta: null,
 			col_delta: null,
+			winner: null,
+			win_type: null,
+			sotw: [
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 1
+					},
+					{
+						occupant: 'angel',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 1
+					},
+					{
+						occupant: 'angel',
+						side: 1,
+						divinely_inspired: true,
+						is_selected: '',
+						heartland: 1
+					},
+					{
+						occupant: 'angel',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 1
+					},
+					{
+						occupant: 'angel',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 1
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 1
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 1,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: true,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: 'mortal',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: ''
+					},
+				],
+				[
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 2
+					},
+					{
+						occupant: 'angel',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 2
+					},
+					{
+						occupant: 'angel',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 2
+					},
+					{
+						occupant: 'angel',
+						side: 2,
+						divinely_inspired: true,
+						is_selected: '',
+						heartland: 2
+					},
+					{
+						occupant: 'angel',
+						side: 2,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 2
+					},
+					{
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
+						is_selected: '',
+						heartland: 2
+					}
+				]
+			]
+			/*
 			sotw: [
 				[
 					{
@@ -725,9 +1286,11 @@ export default {
 					}
 				]
 			]
+			*/
 		};
 	},
 	computed: {
+		
 		current_player_image: function() {
 			switch (this.current_player) {
 				case 1:
@@ -735,7 +1298,31 @@ export default {
 				case 2:
 					return '<span class="cpi hippo">🦛</span>';
 			}
+		},
+		
+		which_screen: function() {
+			if (this.winner) {
+				return 'won'
+			} else {
+				return 'active'
+			}
+		},
+		
+		type_of_victory: function() {
+			if (this.win_type === 'Faith extinguished') {
+				return 'The opposing faith was extinguished, leaving the path clear for the conversion of its former believers'
+			} else if (this.win_type = 'Heartland reached') {
+				return "A divinely inspired monk or abbot reaches the other side's heartland, and begins to convert its populace to the one true faith"
+			} else {
+				return 'The one true faith prevails'
+				// ↑ A fallback, not actually used
+			}
+		},
+		
+		is_in_dev: function() {
+			return '' // 'dev'
 		}
+		
 	}
 };
 </script>
