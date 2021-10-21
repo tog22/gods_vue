@@ -363,6 +363,9 @@ export default {
 				return true;
 			}
 		},
+		is_along_a_path(from_row, from_col, to_row, to_col) {
+			
+		},
 		is_hop(from_row, from_col, to_row, to_col) {
 			
 			if (this.row_delta > 0 && this.col_delta > 0) {
@@ -402,7 +405,7 @@ export default {
 					if (is_along_column && col_direction === 'up') {
 						return false
 					}
-					if (intermediate_piece.side === 2) {
+					if (intermediate_piece.side === 2 && !intermediate_piece.divinely_inspired) {
 						return true
 					} else {
 						return false
@@ -413,7 +416,7 @@ export default {
 					if (is_along_column && col_direction === 'down') {
 						return false
 					}
-					if (intermediate_piece.side === 1) {
+					if (intermediate_piece.side === 1 && !intermediate_piece.divinely_inspired) {
 						return true
 					} else {
 						return false
@@ -474,17 +477,18 @@ export default {
 			}
 			console.log('____________')
 			for (var square of squares_to_check_for_trap) {
-				console.log(square)
-				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
-					if (this.sotw[square.next_row][square.next_col].side === self) {
-						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
+				let adjacent_square = this.sotw[square.adj_row][square.adj_col]
+				let square_beyond = this.sotw[square.next_row][square.next_col]
+				if (adjacent_square.side === opponent) {
+					if (square_beyond.side === self && !square_beyond.divinely_inspired) {
+						if (adjacent_square.divinely_inspired) {
 							
 							this.winner = self
 							this.win_type = 'Faith extinguished'
-							this.sotw[square.adj_row][square.adj_col].divinely_inspired = false
+							adjacent_square.divinely_inspired = false
 						}
-						this.sotw[square.adj_row][square.adj_col].occupant = null
-						this.sotw[square.adj_row][square.adj_col].side = null
+						adjacent_square.occupant = null
+						adjacent_square.side = null
 					}
 				}
 			}
@@ -941,352 +945,6 @@ export default {
 					}
 				]
 			]
-			/*
-			sotw: [
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: true,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: true,
-						is_selected: ''
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					}
-				]
-			]
-			*/
 		};
 	},
 	computed: {
@@ -1320,7 +978,7 @@ export default {
 		},
 		
 		is_in_dev: function() {
-			return '' // 'dev'
+			return 'dev' // 'dev'
 		}
 		
 	}
