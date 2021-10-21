@@ -623,8 +623,8 @@ export default {
 						heartland: 1
 					},
 					{
-						occupant: 'mortal',
-						side: 2,
+						occupant: null,
+						side: null,
 						divinely_inspired: false,
 						is_selected: '',
 						heartland: 1
@@ -662,9 +662,9 @@ export default {
 						is_selected: ''
 					},
 					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: true,
+						occupant: null,
+						side: null,
+						divinely_inspired: false,
 						is_selected: ''
 					},
 				],
