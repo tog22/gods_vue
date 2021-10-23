@@ -14,14 +14,16 @@
 				/>
 			</tr>
 		</table>
-		<div id="info_bar">
-			<div id="item_flex_container">
-				<div class="current_player s_item">
-					<span v-html="current_player_image"></span>
-				</div>
-				<div class="next_turn s_item s_text_only" @click="end_turn">
-					<div class="s_text">
-						End Turn
+		<div id="bottom_zone">
+			<div id="info_bar">
+				<div id="item_flex_container">
+					<div class="current_player s_item">
+						<span v-html="current_player_image"></span>
+					</div>
+					<div class="next_turn s_item s_text_only" @click="end_turn">
+						<div class="s_text">
+							End Turn
+						</div>
 					</div>
 				</div>
 			</div>
@@ -363,9 +365,6 @@ export default {
 				return true;
 			}
 		},
-		is_along_a_path(from_row, from_col, to_row, to_col) {
-			
-		},
 		is_hop(from_row, from_col, to_row, to_col) {
 			
 			if (this.row_delta > 0 && this.col_delta > 0) {
@@ -405,7 +404,7 @@ export default {
 					if (is_along_column && col_direction === 'up') {
 						return false
 					}
-					if (intermediate_piece.side === 2 && !intermediate_piece.divinely_inspired) {
+					if (intermediate_piece.side === 2) {
 						return true
 					} else {
 						return false
@@ -416,7 +415,7 @@ export default {
 					if (is_along_column && col_direction === 'down') {
 						return false
 					}
-					if (intermediate_piece.side === 1 && !intermediate_piece.divinely_inspired) {
+					if (intermediate_piece.side === 1) {
 						return true
 					} else {
 						return false
@@ -477,18 +476,17 @@ export default {
 			}
 			console.log('____________')
 			for (var square of squares_to_check_for_trap) {
-				let adjacent_square = this.sotw[square.adj_row][square.adj_col]
-				let square_beyond = this.sotw[square.next_row][square.next_col]
-				if (adjacent_square.side === opponent) {
-					if (square_beyond.side === self && !square_beyond.divinely_inspired) {
-						if (adjacent_square.divinely_inspired) {
+				console.log(square)
+				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
+					if (this.sotw[square.next_row][square.next_col].side === self) {
+						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
 							
 							this.winner = self
 							this.win_type = 'Faith extinguished'
-							adjacent_square.divinely_inspired = false
+							this.sotw[square.adj_row][square.adj_col].divinely_inspired = false
 						}
-						adjacent_square.occupant = null
-						adjacent_square.side = null
+						this.sotw[square.adj_row][square.adj_col].occupant = null
+						this.sotw[square.adj_row][square.adj_col].side = null
 					}
 				}
 			}
@@ -978,7 +976,7 @@ export default {
 		},
 		
 		is_in_dev: function() {
-			return 'dev' // 'dev'
+			return '' // 'dev'
 		}
 		
 	}

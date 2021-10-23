@@ -23,20 +23,52 @@ body {
 }
 
 @media screen and ( max-width: 767px ) {
+	html {
+		height: 100%;
+	}
+	
 	body {
-		margin: 6px;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	
+	#app {
+		flex-grow: 1;
+		
+		display: flex;
 	}
 	
 	.game_world_root {
-		width: 100%;
-		margin: 0 auto
+		flex-grow: 1;
+		
+		display: flex;
+	}
+	
+	#active_game,
+	#won_game {
+		flex-grow: 1;
+		
+		display: flex;
+		flex-direction: column;
+	}
+	
+	#bottom_zone {
+		flex-grow: 1;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 }
 
-@media screen and ( max-width: 320px ){
-	body {
-		margin: 2px;
+@media screen and ( max-width: 767px ) {
+	.game_world_root {
+		width: 100%;
+		margin: 0 auto;
 	}
+	
 }
 
 .game_world_root.dev {
@@ -78,7 +110,10 @@ body {
 
 @media screen and ( max-width: 767px ) {
 	.board td {
-		width: 16.6666666vw
+		width: 14.58vw;
+		height: 14.58vw;
+		border: 1.1vw solid black;
+		line-height: 1em;
 	}
 	
 }
@@ -113,6 +148,12 @@ body {
 	font-size: 28px;
 	position: relative;
 	top: 0px;
+}
+
+@media screen and ( max-width: 767px ) {
+	.baboon.angel {
+		/* all good */
+	}
 }
 
 /**************************/
@@ -154,6 +195,12 @@ body {
 /**************************/
 /* !THE INFO BAR
 /**************************/
+
+@media screen and ( max-width: 767px ) {
+	#bottom_zone {
+		background: #7c98b3;
+	}
+}
 
 #info_bar {
 	text-align: center;
@@ -217,6 +264,19 @@ body {
 	
 	display: inline-block;
 	padding-bottom: 5px;
+}
+
+@media screen and ( max-width: 767px ) {
+	#bottom {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		
+	}
+	
+	#info_bar {
+		margin-top: 0
+	}
 }
 
 .player_pulse {
