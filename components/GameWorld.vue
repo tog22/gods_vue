@@ -658,6 +658,7 @@ export default {
 			
 		},
 		end_turn() {
+			
 			switch (this.current_player) {
 				case 1:
 					this.current_player = 2;
@@ -666,6 +667,8 @@ export default {
 					this.current_player = 1;
 					break;
 			}
+			
+			this.turn++;
 			this.piece_has_moved = false;
 			this.inspiration_has_moved = false;
 			if (this.selected_row && this.selected_col) {
@@ -681,15 +684,16 @@ export default {
 	},
 	data() {
 		return {
-			current_player: 1,
-			piece_has_moved: false,
-			inspiration_has_moved: false,
-			selected_row: null,
-			selected_col: null,
-			row_delta: null,
-			col_delta: null,
-			winner: null,
-			win_type: null,
+			turn: 					1,
+			current_player: 		1,
+			piece_has_moved: 		false,
+			inspiration_has_moved: 	false,
+			selected_row: 			null,
+			selected_col: 			null,
+			row_delta: 				null,
+			col_delta: 				null,
+			winner:					null,
+			win_type: 				null,
 			sotw: [
 				[
 					{
