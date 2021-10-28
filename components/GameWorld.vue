@@ -503,6 +503,10 @@ export default {
 				return false
 			}
 			
+			if (intermediate_piece.divinely_inspired) {
+				return false;
+			}
+			
 			switch (this.current_player) {
 				
 				case 1:
@@ -581,7 +585,7 @@ export default {
 			}
 			for (var square of squares_to_check_for_trap) {
 				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
-					if (this.sotw[square.next_row][square.next_col].side === self) {
+					if (this.sotw[square.next_row][square.next_col].side === self && !this.sotw[square.next_row][square.next_col].divinely_inspired) {
 						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
 							
 							this.winner = self
