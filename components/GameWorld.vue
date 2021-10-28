@@ -48,6 +48,7 @@
 <script>
 import $ from 'jquery'
 import '@/assets/styles.css';
+import tog from '@/libraries/tog.js'
 
 import Square from './Square.vue';
 
@@ -687,6 +688,20 @@ export default {
 		}
 	},
 	data() {
+		
+		let params = tog.get_query_params()
+		
+		let is_online = params['online'] ? true : false
+		let online_details = is_online
+				? {
+					game:	params['game'],
+					pw:		params['pw'],
+					side:	params['side']
+				}
+				: false
+		l(is_online)
+		l(online_details)
+		
 		return {
 			turn: 					1,
 			current_player: 		1,
@@ -698,6 +713,12 @@ export default {
 			col_delta: 				null,
 			winner:					null,
 			win_type: 				null,
+			is_online:				true,
+			online: {
+				game:	3,
+				pw:		29514,
+				side:	1
+			},
 			sotw: [
 				[
 					{

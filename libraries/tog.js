@@ -1,0 +1,200 @@
+/*****************
+******************
+**              **
+**    tog.js    **
+**    (v1.02)   **
+**              **
+******************
+*****************/
+
+
+/**********************
+***********************
+**                   **
+**   DOCUMENTATION   **
+**                   **
+***********************
+***********************
+
+Use by calling tog.function(). 	You can even do this within functions below.
+
+Include something like this on the page, needs experimenting to get around console error:
+
+		<script type="module" src="Tog.js"></script>
+		<script type="text/javascript">
+			import tog from './Tog';
+		</script>
+
+Functions themselves can depend on other
+libraries like jQuery and jQuery-visible by calling tog.include_js_file() within said functions. This should only load them when said functions are used on a website, though it'd be good to test this.
+
+/**************************
+***************************
+**                       **
+**   LIST OF FUNCTIONS   **
+**                       **
+***************************
+***************************
+
+include_js_file
+get_query_params
+append_query_params
+download_url_and_pass_to_callback
+add_element
+animate_element_when_it_appears
+random_from(array)
+	(Get a random element)
+
+**************************/
+
+var tog = {
+	include_js_file:
+	function(url) {
+		var script = document.createElement('script');
+		script.src = url;
+		script.type = 'text/javascript';
+		document.getElementsByTagName('head')[0].appendChild(script);
+	},
+	
+	// Library URLs for include_js_file:
+	library_urls:
+	{
+		jquery: 
+			'https://code.jquery.com/jquery-3.5.1.min.js',
+		jquery_visible: 
+			'https://tomash.philosofiles.com/external/libraries/js/from-others/jquery-visible/jquery.visible.min.js'	
+	},
+	
+	// End
+	
+	get_query_params: 
+	function
+	(
+		paramToFind = false,
+		originalURL = false
+	) 
+	{
+	    var params = decodeURIComponent(window.location.search.substring(1));
+	    if (paramToFind) {
+		    var sURLVariables = params.split('&'),
+		        sParameterName,
+		        i;
+		
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+		
+		        if (sParameterName[0] === paramToFind) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		    return false;
+	    } else if (originalURL) {
+		    var startOfParams = originalURL.indexOf('?');
+		    if (startOfParams != -1) {
+			    return originalURL.substr(startOfParams+1);
+		    } else {
+			    return false;
+		    }
+		} else {
+		    return params;
+	    }
+	},
+	
+	append_query_params : function(originalURL, toAppend) {
+		if (!tog.get_query_params(false,originalURL)) {
+			originalURL += '?';	
+		} else {
+			originalURL += '&';
+		}
+		originalURL += toAppend;
+		return originalURL;
+	},
+	
+	download_url_and_pass_to_callback(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') : // For IE 5/6 
+            new XMLHttpRequest;
+
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+          }
+        };
+
+        request.open('GET', url, true);
+        request.send(null);
+    },
+    
+    add_element: function (type, css_class, contents, parent) {
+		var newDiv = document.createElement(type);
+		newDiv.className = css_class;
+		var newDivContents = document.createTextNode(contents);
+		newDiv.appendChild(newDivContents);
+		parent.appendChild(newDiv);
+		
+		// Fix for Safari2/Opera9 repaint issue
+		document.documentElement.style.position = "relative";
+	},
+	
+/*
+	animate_element_when_it_appears:
+	function
+	(
+		element_selector,
+		animation,
+		animation_is_a_function_not_a_class = false
+	)
+	{
+		// TO DO: check if this variable is actually available (in scope) when the scroll function is run. If not the if(anim_not_yet_triggered) check for it won't work.
+		let anim_not_yet_triggered = true;
+		
+		$(window).scroll(function(event) {
+			if (anim_not_yet_triggered) {
+				$(element_selector).each(function(i, el) {
+					var el = $(el);
+				    if (el.visible(true)) {
+				    	/*
+				    	if (animation_is_a_function_not_a_class)
+				    	{
+					    	TO DO: find out how to call a function passed as an arg
+					    	animation();	
+				    	} else {
+				    	*//*
+				    		el.addClass(animation);
+				    	// } // End else
+				    	anim_not_yet_triggered = false;
+				    } 
+				});				
+			}
+		}
+	},
+*/
+	random_from:
+	function (array) {
+		return array[Math.floor(Math.random() * array.length)];
+	}
+	/* !To convert to methods */
+	/*
+		To convert to methods
+			function capitalizeFirstLetter(string) {
+			  return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+			
+			function is_blank_string(str) {
+			    return (!str || /^\s*$/.test(str));
+			}
+			
+			function is_empty_string(str) {
+			    return (!str || str.length === 0 );
+			}
+			
+			function is_empty_object(obj) {
+				return Object.keys(obj).length === 0;
+			}
+	*/
+};
+
+
+
+export default tog;
