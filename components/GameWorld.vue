@@ -211,7 +211,7 @@ export default {
 					return false;
 				}
 				if (selected.occupant === 'mortal') {
-					if (this.is_adjacent_non_diagonally()) {
+					if (this.is_adjacent()) {
 						return true;
 					}
 					if (this.is_adjacent_diagonally()) {
@@ -236,7 +236,7 @@ export default {
 				if (!dest.side === this.current_player) {
 					return false;
 				}
-				if (this.is_along_solid_straight_line(from_row, from_col, to_row, to_col)) {
+				if (this.is_along_an_inspiration_path(from_row, from_col, to_row, to_col)) {
 					return true;
 				}
 			}
@@ -248,7 +248,7 @@ export default {
 				return false;
 			}
 		},
-		is_adjacent_non_diagonally() {
+		is_adjacent() {
 			if (this.row_delta === 1 && this.col_delta === 0) {
 				return true;
 			} else if (this.row_delta === 0 && this.col_delta === 1) {
@@ -365,6 +365,111 @@ export default {
 				return true;
 			}
 		},
+		
+		is_along_an_inspiration_path(from_row, from_col, to_row, to_col) {
+			
+			let path_trace_tracker = {}
+			
+			// Create tracker for visited places
+			
+			let visited = []
+			for (var row = 0; row <= 8; row++) {
+				visited[row] = []
+				for (var col = 0; col <= 5; col++) {
+					visited[row][col] = false
+				}
+			}
+			path_trace_tracker.visited = visited
+			
+			// Start from to row and trace all possible courses, until we're either done or have reached divine inspiration
+			
+			path_trace_tracker.reached_inspiration = false
+			this.trace_adjacent_cells(to_row, to_col, path_trace_tracker)
+			
+			if (path_trace_tracker.reached_inspiration) {
+				return true
+			} else {
+				return false
+			}
+			
+		},
+		
+		trace_adjacent_cells(row, col, path_trace_tracker) {
+			
+			let adjacent_cells = this.get_adjacent_cells(row, col)
+			
+			// l('____ TRACE ADJACENT TO '+row+'-'+col)
+			
+			for (var adj of adjacent_cells) {
+				
+				// l('__IN LOOP FOR '+row+'-'+col)
+				// l('checking '+adj.row+'-'+adj.col)
+				if (path_trace_tracker.visited[adj.row][adj.col]) { // f1
+					// l('…visited')
+					continue
+				}
+				path_trace_tracker.visited[adj.row][adj.col] = true
+				
+				if (this.sotw[adj.row][adj.col].side !== this.current_player) { // f2
+					// l('…empty')
+					continue
+				}
+				
+				if (this.sotw[adj.row][adj.col].divinely_inspired) {
+					path_trace_tracker.reached_inspiration = true
+					// l('••• DIVINE INSPIRATION FOUND •••')
+				}
+				
+				// Otherwise…
+				// l('…neither visited nor empty, so starting subtrace')
+				this.trace_adjacent_cells(adj.row, adj.col, path_trace_tracker)
+				
+			}
+		},
+		
+		get_adjacent_cells(row, col) {
+			let adjacent_cells = []
+			
+			if (row !== 0) {
+				adjacent_cells.push(
+					{
+						row: row - 1,
+						col: col
+					}
+				)
+			}
+			
+			if (row !== 8) {
+				adjacent_cells.push(
+					{
+						row: row + 1,
+						col: col
+					}
+				)
+			}
+			
+			if (col !== 0) {
+				adjacent_cells.push(
+					{
+						row: row,
+						col: col - 1
+					}
+				)
+			}
+			
+			if (col !== 5) {
+				adjacent_cells.push(
+					{
+						row: row,
+						col: col + 1
+					}
+				)
+			}
+						
+			return adjacent_cells
+			
+		},
+		
 		is_hop(from_row, from_col, to_row, to_col) {
 			
 			if (this.row_delta > 0 && this.col_delta > 0) {
@@ -474,9 +579,7 @@ export default {
 			} else {
 				opponent = 1
 			}
-			console.log('____________')
 			for (var square of squares_to_check_for_trap) {
-				console.log(square)
 				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
 					if (this.sotw[square.next_row][square.next_col].side === self) {
 						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
@@ -976,7 +1079,7 @@ export default {
 		},
 		
 		is_in_dev: function() {
-			return '' // 'dev'
+			return 'dev' // 'dev'
 		}
 		
 	}

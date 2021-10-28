@@ -22,7 +22,7 @@ body {
 	margin: 30px auto
 }
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	html {
 		height: 100%;
 	}
@@ -63,7 +63,7 @@ body {
 	}
 }
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	.game_world_root {
 		width: 100%;
 		margin: 0 auto;
@@ -108,7 +108,7 @@ body {
 	text-align: center;
 }
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	.board td {
 		width: 14.58vw;
 		height: 14.58vw;
@@ -150,7 +150,7 @@ body {
 	top: 0px;
 }
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	.baboon.angel {
 		/* all good */
 	}
@@ -196,7 +196,7 @@ body {
 /* !THE INFO BAR
 /**************************/
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	#bottom_zone {
 		background: #7c98b3;
 	}
@@ -266,7 +266,7 @@ body {
 	padding-bottom: 5px;
 }
 
-@media screen and ( max-width: 767px ) {
+@media screen and ( max-width: 767px ) and (hover: none) {
 	#bottom {
 		display: flex;
 		flex-direction: column;
