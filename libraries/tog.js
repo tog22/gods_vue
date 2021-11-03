@@ -2,7 +2,7 @@
 ******************
 **              **
 **    tog.js    **
-**    (v1.02)   **
+**    (v1.03)   **
 **              **
 ******************
 *****************/
@@ -74,17 +74,28 @@ var tog = {
 		originalURL = false
 	) 
 	{
-	    var params = decodeURIComponent(window.location.search.substring(1));
+	    var params = []
+		
+		let url_parameters = decodeURIComponent(window.location.search.substring(1))
+		if (!url_parameters) {
+			return []
+		}
+		let sURLVariables = url_parameters.split('&')
+		
+		for (var i = 0; i < sURLVariables.length; i++) {
+			
+			var param = sURLVariables[i].split('=')
+			if (param[1] === undefined) {
+				params[param[0]] = true
+			} else {
+				params[param[0]] = param[1]
+			}
+		}
+		
 	    if (paramToFind) {
-		    var sURLVariables = params.split('&'),
-		        sParameterName,
-		        i;
-		
-		    for (i = 0; i < sURLVariables.length; i++) {
-		        sParameterName = sURLVariables[i].split('=');
-		
-		        if (sParameterName[0] === paramToFind) {
-		            return sParameterName[1] === undefined ? true : sParameterName[1];
+			for (var param in params) {
+		        if (param === paramToFind) {
+		            return params[param]
 		        }
 		    }
 		    return false;
@@ -96,7 +107,7 @@ var tog = {
 			    return false;
 		    }
 		} else {
-		    return params;
+			return params;
 	    }
 	},
 	

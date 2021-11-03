@@ -1,6 +1,21 @@
 <template>
-<div class="game_world_root" :class="[is_in_dev, which_screen]">
+<div class="game_world_root mob_style" :class="[is_in_dev, which_screen]">
 	<div id="active_game">
+		<div class="menu_bar">
+			<div class="s_left">
+				<span class="back">
+					⬅️
+				</span>
+			</div>
+			<div class="s_middle">
+				<h1>
+					Gods
+				</h1>
+			</div>
+			<div class="s_right">
+				
+			</div>
+		</div>
 		<table class="board">
 			<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
 				<Square 
@@ -566,11 +581,11 @@ export default {
 					}
 					break;
 				case 2:
-				if (this.current_player === 1) {
-					this.winner = 1
-					this.win_type = 'Heartland reached'
-				}
-				break;
+					if (this.current_player === 1) {
+						this.winner = 1
+						this.win_type = 'Heartland reached'
+					}
+					break;
 			}
 		},
 		check_for_trap(to_row, to_col) {
@@ -672,7 +687,7 @@ export default {
 					this.current_player = 1;
 					break;
 			}
-			
+			l(this.turn)
 			this.turn++;
 			this.piece_has_moved = false;
 			this.inspiration_has_moved = false;
@@ -685,397 +700,435 @@ export default {
 			this.col_delta = null;
 			// Pulse animation is added in computed property current_player_image 
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
-		}
+			
+			if (this.online_game) {
+
+				let post_url = 'http://gods.philosofiles.com/sync/?action=update&game=3&pw=29514&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
+				
+				console.log(post_url)
+				
+				l(this.$http.get(post_url))
+			}
+		} 
 	},
 	data() {
-		
-		let params = tog.get_query_params()
-		
-		let is_online = params['online'] ? true : false
-		let online_details = is_online
-				? {
-					game:	params['game'],
-					pw:		params['pw'],
-					side:	params['side']
-				}
-				: false
-		l(is_online)
-		l(online_details)
-		
-		return {
-			turn: 					1,
-			current_player: 		1,
-			piece_has_moved: 		false,
-			inspiration_has_moved: 	false,
-			selected_row: 			null,
-			selected_col: 			null,
-			row_delta: 				null,
-			col_delta: 				null,
-			winner:					null,
-			win_type: 				null,
-			is_online:				true,
-			online: {
-				game:	3,
-				pw:		29514,
-				side:	1
-			},
-			sotw: [
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 1
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 1
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: true,
-						is_selected: '',
-						heartland: 1
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 1
-					},
-					{
-						occupant: 'angel',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 1
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 1
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 1,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: 'mortal',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: ''
-					},
-				],
-				[
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 2
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 2
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 2
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: true,
-						is_selected: '',
-						heartland: 2
-					},
-					{
-						occupant: 'angel',
-						side: 2,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 2
-					},
-					{
-						occupant: null,
-						side: null,
-						divinely_inspired: false,
-						is_selected: '',
-						heartland: 2
+		{
+			
+			let params = tog.get_query_params()
+			
+			let is_online = true
+			//let is_online = params['online'] ? true : false
+			let online_details = is_online
+					? {
+						game:	params['game'],
+						pw:		params['pw'],
+						side:	params['side']
 					}
+					: false
+			
+			var turn
+			var sotw
+			var current_player
+			
+			if (is_online) {
+				
+				var server_request = new XMLHttpRequest()
+					
+				let get_url = 'http://gods.philosofiles.com/sync/?action=get&game=3&pw=29514'
+				
+				server_request.open("GET", get_url, false) // false = synchronous
+				server_request.send()
+				
+				const response = JSON.parse(server_request.responseText)
+				
+				turn = response.turn
+				current_player = response.current_player
+				sotw = response.sotw
+				
+				
+			} else if (!is_online) {
+				
+				turn = 1
+				current_player = 1
+				sotw =
+				[
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: true,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: true,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						}
+					]
 				]
-			]
-		};
+			}
+			
+			return {
+				turn: 					1,
+				current_player: 		current_player,
+				piece_has_moved: 		false,
+				inspiration_has_moved: 	false,
+				selected_row: 			null,
+				selected_col: 			null,
+				row_delta: 				null,
+				col_delta: 				null,
+				winner:					null,
+				win_type: 				null,
+				online_game:			true, // is_online
+				sotw: 					sotw,
+				online: {
+					game:	3,
+					pw:		29514,
+					side:	1
+				},
+			};
+		}
 	},
 	computed: {
 		
@@ -1099,7 +1152,7 @@ export default {
 		type_of_victory: function() {
 			if (this.win_type === 'Faith extinguished') {
 				return 'The opposing faith was extinguished, leaving the path clear for the conversion of its former believers'
-			} else if (this.win_type = 'Heartland reached') {
+			} else if (this.win_type === 'Heartland reached') {
 				return "A divinely inspired monk or abbot reaches the other side's heartland, and begins to convert its populace to the one true faith"
 			} else {
 				return 'The one true faith prevails'
