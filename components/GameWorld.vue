@@ -1,23 +1,7 @@
 <template>
-<div class="game_world_root mob_style" :class="[is_in_dev, which_screen]">
-	<div id="active_game">
-		<div class="menu_bar">
-			<div class="s_left">
-				<span class="back">
-					⬅️
-				</span>
-			</div>
-			<div class="s_middle">
-				<h1>
-					Gods
-				</h1>
-			</div>
-			<div class="s_right">
-				
-			</div>
-		</div>
+	<div class="game_world">
 		<table class="board">
-			<tr  v-for="(row, row_index) in sotw" :key="'r'+row_index">
+			<tr v-for="(row, row_index) in sotw" :key="'r'+row_index">
 				<Square 
 					v-for="(square, col_index) in row" 
 						:key="'c'+col_index"
@@ -44,26 +28,13 @@
 			</div>
 		</div>
 	</div>
-	<div id="won_game">
-		<div id="win_text">
-			<div id="victory">
-				Victory
-			</div>
-			<div id="type_of_victory" v-html="type_of_victory">
-			</div>
-			<div id="guide_after_victory">
-				<a href=".">
-					Play again
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
 </template>
+
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import '@/assets/styles.css';
 import tog from '@/libraries/tog.js'
+import { bus } from '@/main'
 
 import Square from './Square.vue';
 
@@ -76,7 +47,11 @@ export default {
 	components: {
 		Square
 	},
-	props: {	
+	props: {
+		online_screen: {
+			required: true,
+			type: Number
+		}
 	},
 	methods: {
 		/***************************
@@ -578,12 +553,20 @@ export default {
 					if (this.current_player === 2) {
 						this.winner = 2
 						this.win_type = 'Heartland reached'
+						bus.$emit('Winner', {
+							winner: 2,
+							win_type: 'Heartland reached'
+						})
 					}
 					break;
 				case 2:
 					if (this.current_player === 1) {
 						this.winner = 1
 						this.win_type = 'Heartland reached'
+						bus.$emit('Winner', {
+							winner: 1,
+							win_type: 'Heartland reached'
+						})
 					}
 					break;
 			}
@@ -601,16 +584,24 @@ export default {
 			}
 			for (var square of squares_to_check_for_trap) {
 				if (this.sotw[square.adj_row][square.adj_col].side === opponent) {
+					
 					if (this.sotw[square.next_row][square.next_col].side === self && !this.sotw[square.next_row][square.next_col].divinely_inspired) {
-						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
-							
-							this.winner = self
-							this.win_type = 'Faith extinguished'
-							this.sotw[square.adj_row][square.adj_col].divinely_inspired = false
-						}
+						
 						this.sotw[square.adj_row][square.adj_col].occupant = null
 						this.sotw[square.adj_row][square.adj_col].side = null
+						
+						if (this.sotw[square.adj_row][square.adj_col].divinely_inspired) {
+							this.winner = this.current_player
+							this.win_type = 'Faith extinguished'
+							this.sotw[square.adj_row][square.adj_col].divinely_inspired = false
+							bus.$emit('Winner', {
+								winner: this.current_player,
+								win_type: 'Faith extinguished'
+							})
+						}
+						
 					}
+					
 				}
 			}
 			
@@ -716,7 +707,7 @@ export default {
 			
 			let params = tog.get_query_params()
 			
-			let is_online = true
+			let is_online = false
 			//let is_online = params['online'] ? true : false
 			let online_details = is_online
 					? {
@@ -751,6 +742,8 @@ export default {
 				turn = 1
 				current_player = 1
 				sotw =
+				[[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":"angel","side":1,"divinely_inspired":true,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":true,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":2}]]
+				/*
 				[
 					[
 						{
@@ -1107,6 +1100,7 @@ export default {
 						}
 					]
 				]
+				*/
 			}
 			
 			return {
