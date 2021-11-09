@@ -143,6 +143,7 @@ export default {
 						this.inspiration_has_moved = true
 						selected.divinely_inspired = false
 						clicked.divinely_inspired = true
+						this.check_for_trap(this.selected_row, this.selected_col)
 						this.check_for_reaching_heartland(clicked)
 						
 					} else if (selected.occupant === 'mortal') {
@@ -742,7 +743,362 @@ export default {
 				turn = 1
 				current_player = 1
 				sotw =
-				[[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":"angel","side":1,"divinely_inspired":true,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":1}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":true,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"angel","side":1,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""},{"occupant":"mortal","side":2,"divinely_inspired":false,"is_selected":""},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":""}],[{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":"angel","side":2,"divinely_inspired":false,"is_selected":"","heartland":2},{"occupant":null,"side":null,"divinely_inspired":false,"is_selected":"","heartland":2}]]
+				[
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: true,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: 'angel',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 1
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 1,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: 'mortal',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: ''
+						},
+					],
+					[
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: true,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: 'angel',
+							side: 2,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						},
+						{
+							occupant: null,
+							side: null,
+							divinely_inspired: false,
+							is_selected: '',
+							heartland: 2
+						}
+					]
+				]
 				/*
 				[
 					[

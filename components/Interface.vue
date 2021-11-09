@@ -1,15 +1,15 @@
 <template>
-<div class="game_world_root mob_style" :class="[game_type, is_in_dev, which_screen]">
-	<div id="active_game">
+<div class="game_world_root mob_style dev" :class="[game_type, which_screen]">
+	<div id="pnp_game" class="screen">
 		<div class="menu_bar">
 			<div class="s_left">
-				<span class="back">
+				<span class="back" @click="back_from_pnp">
 					⬅️
 				</span>
 			</div>
 			<div class="s_middle">
 				<h1>
-					Gods
+					Path of the Gods
 				</h1>
 			</div>
 			<div class="s_right">
@@ -18,14 +18,30 @@
 		</div>
 		<GameWorld :online_screen="0" />
 	</div>
-	<div id="won_game">
+	<div id="end_game" class="screen">
 		<div id="win_text">
 			<div id="victory" v-html="victory_or_defeat">
 			</div>
 			<div id="type_of_victory" v-html="type_of_victory">
 			</div>
-			<div id="menu_button_after_victory" @click="back_to_menu">
+			<div id="menu_button_after_victory" @click="back_after_end_game">
 				Back to menu
+			</div>
+		</div>
+	</div>
+	<div id="menu" class="screen">
+		<h1>
+			Path of the Gods
+		</h1>
+		<div id="menu_buttons">
+			<div class="button" @click="new_pass_and_play">
+				Pass &amp; Play
+			</div>
+			<div class="button" @click="test_online_game">
+				Online Test
+			</div>
+			<div class="button">
+				View Rules
 			</div>
 		</div>
 	</div>
@@ -46,24 +62,37 @@ export default {
 	props: {	
 	},
 	methods: {
-		back_to_menu() {
-			this.which_screen =  'menu'
-			this.game_type =  'online'
-			this.online_side =  1
+		back_after_end_game() {
+			this.which_screen =  'show_menu'
 			this.win_type =  null
 			this.victory_or_defeat =  ''
 			this.type_of_victory =  ''
+		},
+		back_from_pnp() {
+			this.back_after_end_game()
+		},
+		new_pass_and_play() {
+			this.game_type = 'pnp'
+			this.which_screen =  'show_pnp'
+		},
+		new_online() {
+			this.game_type = 'online'
+			this.which_screen =  'show_online'
+			this.online_side =  1
+		},
+		test_online_game() {
+			this.game_type = 'online'
+			this.which_screen =  'show_online'
 		}
 	},
 	data() {
 		return {
-			which_screen: 'active', // (Options: menu/active/victory_or_defeat)
+			which_screen: 'show_menu', // (Options: show_menu/show_pnp/show_end)
 			game_type: 'online',
 			online_side: 1,
 			win_type: null,
 			victory_or_defeat: '',
 			type_of_victory: '',
-			is_in_dev: 'dev'
 		}
 	},
 	created() {
@@ -99,14 +128,9 @@ export default {
 				}	
 			}
 			
-			this.which_screen = 'victory_or_defeat'			
+			this.which_screen = 'show_end'			
 			
 		})	
 	},
-	computed: {
-		// is_in_dev: function() {
-		// 	return 'dev' // 'dev'
-		// }
-	}
 };
 </script>
