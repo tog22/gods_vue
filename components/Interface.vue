@@ -18,6 +18,24 @@
 		</div>
 		<GameWorld :online_screen="0" />
 	</div>
+	<div id="online_game" class="screen">
+		<div class="menu_bar">
+			<div class="s_left">
+				<span class="back" @click="back_from_online">
+					⬅️
+				</span>
+			</div>
+			<div class="s_middle">
+				<h1>
+					Path of the Gods
+				</h1>
+			</div>
+			<div class="s_right">
+				
+			</div>
+		</div>
+		<GameWorld :online_screen="1" />
+	</div>
 	<div id="end_game" class="screen">
 		<div id="win_text">
 			<div id="victory" v-html="victory_or_defeat">
@@ -37,11 +55,110 @@
 			<div class="button" @click="new_pass_and_play">
 				Pass &amp; Play
 			</div>
-			<div class="button" @click="test_online_game">
-				Online Test
+			<div class="button" @click="online_games">
+				Play Online
 			</div>
 			<div class="button">
 				View Rules
+			</div>
+		</div>
+	</div>
+	<div id="selecting_online" class="screen">
+		<div class="menu_bar">
+			<div class="s_left">
+				<span class="back" @click="back_from_selecting_online">
+					⬅️
+				</span>
+			</div>
+			<div class="s_middle">
+				<h1>
+					Path of the Gods
+				</h1>
+			</div>
+			<div class="s_right">
+				
+			</div>
+		</div>
+		<div id="inner_selecting_online">
+			<h2>
+				Online Games
+			</h2>
+			<div id="menu_buttons">
+				<div v-if="!online.user" class="button" @click="to_log_in">
+					Log In
+				</div>
+				<div v-if="!online.user" class="button" @click="to_sign_up">
+					Sign Up
+				</div>
+				<div v-else-if="online.user === 'logging_in'">
+					<div class="form">
+						<div class="s_input">
+							<input name="username" type="text" required />
+						</div>
+						<div class="s_input">
+							<input name="password" type="password" required />
+						</div>
+						<div class="s_input">
+							<button type="button" @click="log_in_button">
+								Log in
+							</button>
+						</div>
+					</div>
+				</div>
+				<div v-else-if="online.user === 'login_error'">
+					<div class="form">
+						<div class="s_input">
+							<input name="username" type="text" required />
+						</div>
+						<div class="s_input">
+							<input name="password" type="password" required />
+						</div>
+						<div class="s_input">
+							<button type="button" @click="log_in_button">
+								Log in
+							</button>
+						</div>
+					</div>
+					<div class="form_error">
+						Error, try again (TODO: change text)
+					</div>
+				</div>
+				<div v-else-if="online.user === 'signing_up'">
+					<div class="form">
+						<div class="s_input">
+							<input name="username" type="text" required />
+						</div>
+						<div class="s_input">
+							<input name="password" type="password" required />
+						</div>
+						<div class="s_input">
+							<button type="button" @click="sign_up_button">
+								Sign up
+							</button>
+						</div>
+					</div>
+				</div>
+				<div v-else-if="online.user === 'signup_error'">
+					<div class="form">
+						<div class="s_input">
+							<input name="username" type="text" required />
+						</div>
+						<div class="s_input">
+							<input name="password" type="password" required />
+						</div>
+						<div class="s_input">
+							<button type="button" @click="sign_up_button">
+								Sign up
+							</button>
+						</div>
+					</div>
+					<div class="form_error">
+						Error, try again (TODO: change text)
+					</div>
+				</div>
+				<div v-else class="button" @click="new_online">
+					New Game
+				</div>
 			</div>
 		</div>
 	</div>
@@ -71,6 +188,15 @@ export default {
 		back_from_pnp() {
 			this.back_after_end_game()
 		},
+		back_from_selecting_online() {
+			this.which_screen =  'show_menu'
+		},
+		back_from_online() {
+			this.which_screen =  'show_selecting_online'
+		},
+		online_games() {
+			this.which_screen =  'show_selecting_online'
+		},
 		new_pass_and_play() {
 			this.game_type = 'pnp'
 			this.which_screen =  'show_pnp'
@@ -87,12 +213,16 @@ export default {
 	},
 	data() {
 		return {
-			which_screen: 'show_menu', // (Options: show_menu/show_pnp/show_end)
+			which_screen: 'show_selecting_online', 
+			// ↑ Options: show_menu/show_selecting_online/show_online/show_pnp/show_end
 			game_type: 'online',
 			online_side: 1,
 			win_type: null,
 			victory_or_defeat: '',
 			type_of_victory: '',
+			online: {
+				user: null, // 'Tomek'
+			}
 		}
 	},
 	created() {
@@ -132,5 +262,10 @@ export default {
 			
 		})	
 	},
+	computed: {
+		content_for_online: function() {
+			return '<div id="menu_buttons"><div class="button" @click="new_online">New Game</div></div>'
+		}
+	}
 };
 </script>

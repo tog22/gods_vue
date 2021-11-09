@@ -708,9 +708,7 @@ export default {
 			
 			let params = tog.get_query_params()
 			
-			let is_online = false
-			//let is_online = params['online'] ? true : false
-			let online_details = is_online
+			let online_details = this.online_screen
 					? {
 						game:	params['game'],
 						pw:		params['pw'],
@@ -722,7 +720,7 @@ export default {
 			var sotw
 			var current_player
 			
-			if (is_online) {
+			if (this.online_screen) {
 				
 				var server_request = new XMLHttpRequest()
 					
@@ -738,7 +736,7 @@ export default {
 				sotw = response.sotw
 				
 				
-			} else if (!is_online) {
+			} else if (!this.online_screen) {
 				
 				turn = 1
 				current_player = 1
@@ -1470,7 +1468,7 @@ export default {
 				col_delta: 				null,
 				winner:					null,
 				win_type: 				null,
-				online_game:			true, // is_online
+				online_game:			true, // this.online_screen
 				sotw: 					sotw,
 				online: {
 					game:	3,

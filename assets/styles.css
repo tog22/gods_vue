@@ -97,24 +97,39 @@ body {
 	margin: initial
 }
 
+.show_menu #menu,
+.show_selecting_online #selecting_online,
 .show_pnp #pnp_game,
-.show_end #end_game,
-.show_menu #menu {
+.show_end #end_game {
 	display: flex;
 }
 
-.show_menu #pnp_game,
-.show_online #pnp_game,
-.show_end #pnp_game,
-.show_menu #online_game,
-.show_pnp #online_game,
-.show_end #online_game,
-.show_menu #end_game,
-.show_online #end_game,
-.show_pnp #end_game,
+.show_selecting_online #menu,
 .show_online #menu,
 .show_pnp #menu,
-.show_end #menu {
+.show_end #menu,
+
+.show_menu #selecting_online,
+.show_pnp #selecting_online,
+.show_online #selecting_online,
+.show_end #selecting_online,
+
+.show_menu #online_game,
+.show_selecting_online #online_game,
+.show_pnp #online_game,
+.show_end #online_game,
+
+.show_menu #pnp_game,
+.show_selecting_online #pnp_game,
+.show_online #pnp_game,
+.show_end #pnp_game,
+
+.show_menu #end_game,
+.show_selecting_online #end_game,
+.show_online #end_game,
+.show_pnp #end_game 
+
+{
 	display: none
 }
 
@@ -235,6 +250,12 @@ body {
 		background-color: #f2d773;
 	}
 }
+
+
+/*****************************/
+/* !======================== */
+/* !== MENU & INFO BARS ==== */
+/*****************************/
 
 /**************************/
 /* !MENU BAR
@@ -458,19 +479,25 @@ $("#info_bar .current_player.s_item").on(
 
 */
 
-/*********************************/
-/* !==  SCREENS  ===========
-/*********************************/
+/******************************/
+/* !======================== */
+/* !==  SCREENS  =========== */
+/*****************************/
 
 /**************************/
 /* !SCREENS IN GENERAL
 /**************************/
 
 #menu,
+#selecting_online,
 #end_game {
 	border: 4px solid black;
 	text-align: center;
 	box-sizing: border-box;
+}
+
+#menu,
+#end_game {
 	padding: 20px 5% 80px;
 }
 
@@ -486,6 +513,34 @@ $("#info_bar .current_player.s_item").on(
 	color: #383838;
 	text-transform: uppercase;
 }
+
+/**************************/
+/* !ONLINE MENU
+/**************************/
+
+.screen#selecting_online {
+	justify-content: start;
+}
+
+#selecting_online h2 {
+	font-size: 36px;
+	text-transform: uppercase;
+	margin-top: 0;
+}
+
+#inner_selecting_online {
+	flex-grow: 1;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	
+	padding: 20px 5% 80px;
+}
+
+/**************************/
+/* !BUTTONS
+/**************************/
 
 .button {
 	background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);

@@ -1,13 +1,73 @@
-<div id="menu">
-	<h1>
-		Gods
-	</h1>
-	<div id="menu_buttons">
-		<div class="button" @click="new_pass_and_play">
-			Pass &amp; Play
+
+<div v-else-if="online.user === 'logging_in">
+	<div class="form">
+		<div class="s_input">
+			<input name="username" type="text" required />
 		</div>
-		<div class="button" @click="online_game">
-			Online Game (test)
+		<div class="s_input">
+			<input name="password" type="password" required />
+		</div>
+		<div class="s_input">
+			<button type="button">
+				Log in
+			</button>
 		</div>
 	</div>
+</div>
+<div v-else-if="online.user === 'login_error">
+	<div class="form">
+		<div class="s_input">
+			<input name="username" type="text" required />
+		</div>
+		<div class="s_input">
+			<input name="password" type="password" required />
+		</div>
+		<div class="s_input">
+			<button type="button">
+				Log in
+			</button>
+		</div>
+	</div>
+	<div class="form_error">
+		Error, try again (TODO: change text)
+	</div>
+</div>
+<div v-else-if="online.user === 'signup_error">
+	<div class="form">
+		<div class="s_input">
+			<input name="username" type="text" required />
+		</div>
+		<div class="s_input">
+			<input name="password" type="password" required />
+		</div>
+		<div class="s_input">
+			<button type="button">
+				Sign up
+			</button>
+		</div>
+	</div>
+	<div class="form_error">
+		Error, try again (TODO: change text)
+	</div>
+</div>
+<div v-else-if="online.user === 'login_failue">
+	<div class="form">
+		<div class="s_input">
+			<input name="username" type="text" required />
+		</div>
+		<div class="s_input">
+			<input name="password" type="password" required />
+		</div>
+		<div class="s_input">
+			<button type="button">
+				Log in
+			</button>
+		</div>
+	</div>
+	<div class="form_error">
+		Error, try again (TODO: change text)
+	</div>
+</div>
+<div v-else class="button" @click="new_online">
+	New Game
 </div>
