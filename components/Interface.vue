@@ -1,4 +1,5 @@
 <template>
+
 <div class="game_world_root mob_style dev" :class="[game_type, which_screen]">
 	<div id="pnp_game" class="screen">
 		<div class="menu_bar">
@@ -90,64 +91,104 @@
 				<div v-if="!online.user" class="button" @click="to_sign_up">
 					Sign Up
 				</div>
-				<div v-else-if="online.user === 'logging_in'">
-					<div class="form">
-						<div class="s_input">
-							<input name="username" type="text" required />
+				<div v-else-if="online.user === 'logging in'">
+					<div class="login form">
+						<div class="input_with_label">
+							<div class="s_label">
+								Username
+							</div>
+							<div class="s_input">
+								<input name="user" class="user" type="text" required />
+							</div>
+						</div>
+						<div class="input_with_label">
+							<div class="s_label">
+								Password
+							</div>
+							<div class="s_input">
+								<input name="pass" class="pass" type="password" required />
+							</div>
 						</div>
 						<div class="s_input">
-							<input name="password" type="password" required />
-						</div>
-						<div class="s_input">
-							<button type="button" @click="log_in_button">
+							<button type="button" @click="log_in_button()">
 								Log in
 							</button>
 						</div>
 					</div>
 				</div>
 				<div v-else-if="online.user === 'login_error'">
-					<div class="form">
-						<div class="s_input">
-							<input name="username" type="text" required />
+					<div class="login_error form">
+						<div class="input_with_label">
+							<div class="s_label">
+								Username
+							</div>
+							<div class="s_input">
+								<input name="user" class="user" type="text" required />
+							</div>
 						</div>
-						<div class="s_input">
-							<input name="password" type="password" required />
+						<div class="input_with_label">
+							<div class="s_label">
+								Password
+							</div>
+							<div class="s_input">
+								<input name="pass" class="pass" type="password" required />
+							</div>
 						</div>
-						<div class="s_input">
-							<button type="button" @click="log_in_button">
-								Log in
-							</button>
-						</div>
+					</div>
+					<div class="s_input">
+						<button type="button" @click="log_in_button('error')">
+							Log in
+						</button>
 					</div>
 					<div class="form_error">
 						Error, try again (TODO: change text)
 					</div>
 				</div>
-				<div v-else-if="online.user === 'signing_up'">
-					<div class="form">
-						<div class="s_input">
-							<input name="username" type="text" required />
+				<div v-else-if="online.user === 'signing up'">
+					<div class="signup form">
+						<div class="input_with_label">
+							<div class="s_label">
+								Username
+							</div>
+							<div class="s_input">
+								<input name="user" class="user" type="text" required />
+							</div>
+						</div>
+						<div class="input_with_label">
+							<div class="s_label">
+								Password
+							</div>
+							<div class="s_input">
+								<input name="pass" class="pass" type="password" required />
+							</div>
 						</div>
 						<div class="s_input">
-							<input name="password" type="password" required />
-						</div>
-						<div class="s_input">
-							<button type="button" @click="sign_up_button">
+							<button type="button" @click="sign_up_button()">
 								Sign up
 							</button>
 						</div>
 					</div>
 				</div>
 				<div v-else-if="online.user === 'signup_error'">
-					<div class="form">
-						<div class="s_input">
-							<input name="username" type="text" required />
+					<div class="signup_error form">
+						<div class="input_with_label">
+							<div class="s_label">
+								Username
+							</div>
+							<div class="s_input">
+								<input name="user" class="user" type="text" required />
+							</div>
+						</div>
+						<div class="input_with_label">
+							<div class="s_label">
+								Password
+							</div>
+							<div class="s_input">
+								<input name="pass" class="pass" type="password" required />
+							</div>
 						</div>
 						<div class="s_input">
-							<input name="password" type="password" required />
-						</div>
-						<div class="s_input">
-							<button type="button" @click="sign_up_button">
+							<button type="button" @click="sign_up_button('error')">
 								Sign up
 							</button>
 						</div>
@@ -163,13 +204,19 @@
 		</div>
 	</div>
 </div>
+
 </template>
 
 <script>
+import $ from 'jquery'
 import '@/assets/styles.css';
 import { bus } from '@/main'
 
 import GameWorld from './GameWorld.vue';
+
+let l = function (to_log) { 
+	console.log(to_log) 
+}
 
 
 export default {
@@ -197,6 +244,34 @@ export default {
 		online_games() {
 			this.which_screen =  'show_selecting_online'
 		},
+		to_log_in() {
+			this.online.user = 'logging in'
+		},
+		to_sign_up() {
+			this.online.user = 'signing up'
+		},
+		log_in_button(error = false) {
+			
+			var form_class
+			if (error) {
+				form_class = '.login_error.form'
+			} else {
+				form_class = '.login.form'
+			}
+			let user = $(form_class+' .user').val()
+			
+			
+			// var server_request = new XMLHttpRequest()
+			// 	
+			// let get_url = 'http://gods.philosofiles.com/sync/?action=login&username=BLLLLLLLL&pw=29514'
+			// 
+			// server_request.open("GET", get_url, false) // false = synchronous
+			// server_request.send()
+			// 
+			// const response = JSON.parse(server_request.responseText)
+			// 
+			// turn = response.turn
+		},
 		new_pass_and_play() {
 			this.game_type = 'pnp'
 			this.which_screen =  'show_pnp'
@@ -221,7 +296,9 @@ export default {
 			victory_or_defeat: '',
 			type_of_victory: '',
 			online: {
-				user: null, // 'Tomek'
+				user: 'logging in', // 'Tomek'
+				login_error: null,
+				signup_error: null
 			}
 		}
 	},
@@ -263,9 +340,6 @@ export default {
 		})	
 	},
 	computed: {
-		content_for_online: function() {
-			return '<div id="menu_buttons"><div class="button" @click="new_online">New Game</div></div>'
-		}
 	}
 };
 </script>

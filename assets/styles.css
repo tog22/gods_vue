@@ -525,7 +525,7 @@ $("#info_bar .current_player.s_item").on(
 #selecting_online h2 {
 	font-size: 36px;
 	text-transform: uppercase;
-	margin-top: 0;
+	margin: 0 0 0.2em;
 }
 
 #inner_selecting_online {
@@ -536,6 +536,32 @@ $("#info_bar .current_player.s_item").on(
 	justify-content: center;
 	
 	padding: 20px 5% 80px;
+}
+
+.form {
+	padding: 1em 5%;
+}
+
+.form .s_label {
+	font-weight: bold;
+	text-align: left;
+	text-transform: uppercase;
+	margin-bottom: 0.4em;
+	padding-left: 6px;
+}
+.form .s_input input[type="text"],
+.form .s_input input[type="password"] {
+	font-size: 24px;
+	height: 2em;
+	margin-bottom: 1em;
+	width: 100%;
+}
+
+.form button {
+	font-size: 24px;
+	padding: 20px 0;
+	width: 100%;
+	text-transform: uppercase;
 }
 
 /**************************/
