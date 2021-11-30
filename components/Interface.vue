@@ -91,14 +91,14 @@
 				<div v-if="!online.user" class="button" @click="to_sign_up">
 					Sign Up
 				</div>
-				<div v-else-if="online.user === 'logging in'">
+				<div v-else-if="online.user === 'logging_in'">
 					<div class="login form">
 						<div class="input_with_label">
 							<div class="s_label">
 								Username
 							</div>
 							<div class="s_input">
-								<input name="user" class="user" type="text" required />
+								<input name="user" id="log_u" class="user" type="text" required />
 							</div>
 						</div>
 						<div class="input_with_label">
@@ -106,7 +106,7 @@
 								Password
 							</div>
 							<div class="s_input">
-								<input name="pass" class="pass" type="password" required />
+								<input name="pass" id="log_p" class="pass" type="password" required />
 							</div>
 						</div>
 						<div class="s_input">
@@ -123,7 +123,7 @@
 								Username
 							</div>
 							<div class="s_input">
-								<input name="user" class="user" type="text" required />
+								<input name="user" id="log_err_u" class="user" type="text" required />
 							</div>
 						</div>
 						<div class="input_with_label">
@@ -131,27 +131,27 @@
 								Password
 							</div>
 							<div class="s_input">
-								<input name="pass" class="pass" type="password" required />
+								<input name="pass" id="log_err_p" class="pass" type="password" required />
 							</div>
 						</div>
-					</div>
-					<div class="s_input">
-						<button type="button" @click="log_in_button('error')">
-							Log in
-						</button>
+						<div class="s_input">
+							<button type="button" @click="log_in_button('error')">
+								Log in
+							</button>
+						</div>
 					</div>
 					<div class="form_error">
-						Error, try again (TODO: change text)
+						{{online.login_error}}
 					</div>
 				</div>
-				<div v-else-if="online.user === 'signing up'">
+				<div v-else-if="online.user === 'signing_up'">
 					<div class="signup form">
 						<div class="input_with_label">
 							<div class="s_label">
 								Username
 							</div>
 							<div class="s_input">
-								<input name="user" class="user" type="text" required />
+								<input name="user" class="user" id="su_u" type="text" required />
 							</div>
 						</div>
 						<div class="input_with_label">
@@ -159,7 +159,7 @@
 								Password
 							</div>
 							<div class="s_input">
-								<input name="pass" class="pass" type="password" required />
+								<input name="pass" class="pass" id="su_p" type="password" required />
 							</div>
 						</div>
 						<div class="s_input">
@@ -176,7 +176,7 @@
 								Username
 							</div>
 							<div class="s_input">
-								<input name="user" class="user" type="text" required />
+								<input name="user" id="su_err_u" class="user" type="text" required />
 							</div>
 						</div>
 						<div class="input_with_label">
@@ -184,7 +184,7 @@
 								Password
 							</div>
 							<div class="s_input">
-								<input name="pass" class="pass" type="password" required />
+								<input name="pass" id="su_err_p" class="pass" type="password" required />
 							</div>
 						</div>
 						<div class="s_input">
@@ -194,7 +194,7 @@
 						</div>
 					</div>
 					<div class="form_error">
-						Error, try again (TODO: change text)
+						{{online.signup_error}}
 					</div>
 				</div>
 				<div v-else class="button" @click="new_online">
@@ -208,7 +208,6 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import '@/assets/styles.css';
 import { bus } from '@/main'
 
@@ -217,6 +216,7 @@ import GameWorld from './GameWorld.vue';
 let l = function (to_log) { 
 	console.log(to_log) 
 }
+let lo = l
 
 
 export default {
@@ -227,8 +227,8 @@ export default {
 	},
 	methods: {
 		back_after_end_game() {
-			this.which_screen =  'show_menu'
-			this.win_type =  null
+			this.which_screen = 'show_menu'
+			this.win_type = null
 			this.victory_or_defeat =  ''
 			this.type_of_victory =  ''
 		},
@@ -237,6 +237,10 @@ export default {
 		},
 		back_from_selecting_online() {
 			this.which_screen =  'show_menu'
+			console.log(this)
+			if (this.online.user === 'logging_in' || this.online.user === 'signing_up') {
+				this.online.user = ''
+			}
 		},
 		back_from_online() {
 			this.which_screen =  'show_selecting_online'
@@ -245,32 +249,87 @@ export default {
 			this.which_screen =  'show_selecting_online'
 		},
 		to_log_in() {
-			this.online.user = 'logging in'
+			this.online.user = 'logging_in'
 		},
 		to_sign_up() {
-			this.online.user = 'signing up'
+			this.online.user = 'signing_up'
+		},
+		debug() {
+			lo(this)
 		},
 		log_in_button(error = false) {
+						
+						var user
+						var pw
+						if (error) {
+							user = document.getElementById('log_err_u').value
+							pw = document.getElementById('log_err_p').value
+						} else {
+							user = document.getElementById('log_u').value
+							pw = document.getElementById('log_p').value
+						}
+						
+						var server_request = new XMLHttpRequest()
+							
+						let get_url = 'http://gods.philosofiles.com/sync/?action=login&username='+user+'&pw='+pw
+						//lo(get_url)
+						
+						server_request.open("GET", get_url, false) // false = synchronous
+						server_request.send()
+						
+						const response = JSON.parse(server_request.responseText)
+						lo(response)
+						
+						if (response.result === 'success') {
+							this.online.user = user
+						} else if (response.result === "un or pw wrong") {
+							this.which_screen = 'show_selecting_online'
+							this.online.user = 'login_error'
+							this.online.login_error='Wrong username or password'
+						} else {
+							// todo: general error message
+							alert('other error')
+						}
+						
+		},
+		sign_up_button(error = false) {
 			
-			var form_class
+			var user
+			var pw
 			if (error) {
-				form_class = '.login_error.form'
+				user = document.getElementById('su_err_u').value
+				pw = document.getElementById('su_err_p').value
 			} else {
-				form_class = '.login.form'
+				user = document.getElementById('su_u').value
+				pw = document.getElementById('su_p').value
 			}
-			let user = $(form_class+' .user').val()
 			
+			var server_request = new XMLHttpRequest()
+				
+			let get_url = 'http://gods.philosofiles.com/sync/?action=signup&username='+user+'&pw='+pw
+			//lo(get_url)
 			
-			// var server_request = new XMLHttpRequest()
-			// 	
-			// let get_url = 'http://gods.philosofiles.com/sync/?action=login&username=BLLLLLLLL&pw=29514'
-			// 
-			// server_request.open("GET", get_url, false) // false = synchronous
-			// server_request.send()
-			// 
-			// const response = JSON.parse(server_request.responseText)
-			// 
-			// turn = response.turn
+			server_request.open("GET", get_url, false) // false = synchronous
+			server_request.send()
+			
+			const response = JSON.parse(server_request.responseText)
+			lo(response)
+			
+			if (response.result === 'success') {
+				this.online.user = user
+			} else if (response.result === "sql error") {
+				this.which_screen = 'show_selecting_online'
+				this.online.user = 'signup_error'
+				if (response.error_number === '1062') {
+					this.online.signup_error='Username already taken'
+				} else {
+					this.online.signup_error='Unknown error'
+				}
+			} else {
+				// todo: general error message
+				alert('other error')
+			}
+			
 		},
 		new_pass_and_play() {
 			this.game_type = 'pnp'
@@ -296,7 +355,7 @@ export default {
 			victory_or_defeat: '',
 			type_of_victory: '',
 			online: {
-				user: 'logging in', // 'Tomek'
+				user: 'Tomek', // Tomek/logging_in/etc
 				login_error: null,
 				signup_error: null
 			}
