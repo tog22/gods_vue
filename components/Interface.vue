@@ -35,7 +35,7 @@
 				
 			</div>
 		</div>
-		<GameWorld :online_screen="1" />
+		<GameWorld :online_screen="1" :online="online" />
 	</div>
 	<div id="end_game" class="screen">
 		<div id="win_text">
@@ -148,7 +148,7 @@
 					<div class="signup form">
 						<div class="input_with_label">
 							<div class="s_label">
-								Username
+								Username (no spaces)
 							</div>
 							<div class="s_input">
 								<input name="user" class="user" id="su_u" type="text" required />
@@ -197,8 +197,32 @@
 						{{online.signup_error}}
 					</div>
 				</div>
-				<div v-else class="button" @click="new_online">
-					New Game
+				<div v-else>=
+					<div v-if="online.subscreen === 'user menu' ">
+						<div class="button" @click="new_online">
+							New Game
+						</div>
+					</div>
+					<div v-else-if="online.subscreen === 'select opponent' ">
+						<div class="form">
+							<div class="input_with_label">
+								<div class="s_label">
+									Opponent's username
+								</div>
+								<div class="s_input">
+									<input name="opponent" id="newg_opponent" type="text" required />
+								</div>
+							</div>
+							<div class="s_input">
+								<button type="button" @click="select_opponent">
+									Start game
+								</button>
+							</div>
+							<div class="form_error">
+								{{online.error}}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -282,6 +306,7 @@ export default {
 						
 						if (response.result === 'success') {
 							this.online.user = user
+							this.online.subscreen = 'user menu'
 						} else if (response.result === "un or pw wrong") {
 							this.which_screen = 'show_selecting_online'
 							this.online.user = 'login_error'
@@ -317,6 +342,7 @@ export default {
 			
 			if (response.result === 'success') {
 				this.online.user = user
+				this.online.subscreen = 'user menu'
 			} else if (response.result === "sql error") {
 				this.which_screen = 'show_selecting_online'
 				this.online.user = 'signup_error'
@@ -331,14 +357,54 @@ export default {
 			}
 			
 		},
+		new_online() {
+			this.online.subscreen = 'select opponent'
+		},
+		select_opponent() {
+			
+			var opp = document.getElementById('newg_opponent').value
+			var server_request = new XMLHttpRequest()
+							
+			let get_url = 'http://gods.philosofiles.com/sync/?action=find_user&user='+opp
+			lo(get_url)
+			
+			server_request.open("GET", get_url, false) // false = synchronous
+			server_request.send()
+			
+			const response = JSON.parse(server_request.responseText)
+			
+			if (response.result === 'failure') {
+				this.online.error = 'Opponent not found'
+			} else if (response.result === 'success') {
+				
+				let pw = Math.floor(Math.random() * 32000)
+				
+				server_request = new XMLHttpRequest()
+				get_url = 'http://gods.philosofiles.com/sync/?action=create&pw='+pw+'&p1='+this.online.user+'&p2='+opp
+				//lo(get_url)
+				
+				server_request.open("GET", get_url, false) // false = synchronous
+				server_request.send()
+				
+				const response = JSON.parse(server_request.responseText)
+				
+				if (response.result === 'success') {
+					this.game_type = 'online'
+					this.which_screen =  'show_online'
+					this.online_side =  1
+					this.online.game_id = response.game_id
+				} else {
+					this.online.error = 'Failed to create game'
+				}
+				
+			} else {
+				this.online.error = 'Unknown error'
+			}
+			
+		},
 		new_pass_and_play() {
 			this.game_type = 'pnp'
 			this.which_screen =  'show_pnp'
-		},
-		new_online() {
-			this.game_type = 'online'
-			this.which_screen =  'show_online'
-			this.online_side =  1
 		},
 		test_online_game() {
 			this.game_type = 'online'
@@ -356,6 +422,9 @@ export default {
 			type_of_victory: '',
 			online: {
 				user: 'Tomek', // Tomek/logging_in/etc
+				game_id: null,
+				subscreen: 'select opponent', // default = ''
+				error: '',
 				login_error: null,
 				signup_error: null
 			}
