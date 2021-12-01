@@ -35,7 +35,7 @@
 				
 			</div>
 		</div>
-		<GameWorld :online_screen="1" :online="online" />
+		<GameWorld v-if="which_screen === 'show_online'" :online_screen="1" :online="online" />
 	</div>
 	<div id="end_game" class="screen">
 		<div id="win_text">
@@ -381,7 +381,7 @@ export default {
 				
 				server_request = new XMLHttpRequest()
 				get_url = 'http://gods.philosofiles.com/sync/?action=create&pw='+pw+'&p1='+this.online.user+'&p2='+opp
-				//lo(get_url)
+				lo(get_url)
 				
 				server_request.open("GET", get_url, false) // false = synchronous
 				server_request.send()
@@ -391,8 +391,9 @@ export default {
 				if (response.result === 'success') {
 					this.game_type = 'online'
 					this.which_screen =  'show_online'
-					this.online_side =  1
+					this.online.side =  1
 					this.online.game_id = response.game_id
+					this.online.pw = pw
 				} else {
 					this.online.error = 'Failed to create game'
 				}
@@ -416,13 +417,14 @@ export default {
 			which_screen: 'show_selecting_online', 
 			// ↑ Options: show_menu/show_selecting_online/show_online/show_pnp/show_end
 			game_type: 'online',
-			online_side: 1,
 			win_type: null,
 			victory_or_defeat: '',
 			type_of_victory: '',
 			online: {
 				user: 'Tomek', // Tomek/logging_in/etc
 				game_id: null,
+				pw: null,
+				side: null,
 				subscreen: 'select opponent', // default = ''
 				error: '',
 				login_error: null,
@@ -433,7 +435,7 @@ export default {
 	created() {
 		bus.$on('Winner', (e) => {
 			
-			if (this.game_type === 'online' && e.winner !== this.online_side) {
+			if (this.game_type === 'online' && e.winner !== this.online.side) {
 				this.victory_or_defeat = 'Defeat!'
 				switch (e.win_type) {
 					case 'Heartland reached':

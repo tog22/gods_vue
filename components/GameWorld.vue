@@ -41,6 +41,7 @@ import Square from './Square.vue';
 let l = function (to_log) { 
 	console.log(to_log) 
 }
+let lo = l
 
 
 export default {
@@ -51,6 +52,9 @@ export default {
 		online_screen: {
 			required: true,
 			type: Number
+		},
+		online: {
+			type: Object
 		}
 	},
 	methods: {
@@ -694,27 +698,19 @@ export default {
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
 			
 			if (this.online_game) {
-
-				let post_url = 'http://gods.philosofiles.com/sync/?action=update&game=3&pw=29514&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
 				
-				console.log(post_url)
+				var server_request = new XMLHttpRequest()
 				
-				l(this.$http.get(post_url))
+				let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.pw+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
+				
+				server_request.open("GET", get_url, false) // false = synchronous
+				server_request.send()
+				
 			}
 		} 
 	},
 	data() {
 		{
-			
-			let params = tog.get_query_params()
-			
-			let online_details = this.online_screen
-					? {
-						game:	params['game'],
-						pw:		params['pw'],
-						side:	params['side']
-					}
-					: false
 			
 			var turn
 			var sotw
@@ -722,14 +718,17 @@ export default {
 			
 			if (this.online_screen) {
 				
+								lo(this.online)
+				
 				var server_request = new XMLHttpRequest()
 					
-				let get_url = 'http://gods.philosofiles.com/sync/?action=get&game=3&pw=29514'
+				let get_url = 'http://gods.philosofiles.com/sync/?action=get&game='+this.online.game_id+'&pw='+this.online.pw
+				lo(get_url)
 				
 				server_request.open("GET", get_url, false) // false = synchronous
 				server_request.send()
 				
-				const response = JSON.parse(server_request.responseText)
+				const response = JSON.parse(server_request.responseText)				
 				
 				turn = response.turn
 				current_player = response.current_player
@@ -1098,6 +1097,10 @@ export default {
 					]
 				]
 				/*
+				//
+				// Default start =
+				//
+				
 				[
 					[
 						{
@@ -1470,11 +1473,6 @@ export default {
 				win_type: 				null,
 				online_game:			true, // this.online_screen
 				sotw: 					sotw,
-				online: {
-					game:	3,
-					pw:		29514,
-					side:	1
-				},
 			};
 		}
 	},
