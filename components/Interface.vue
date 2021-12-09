@@ -67,7 +67,7 @@
 	<div id="selecting_online" class="screen">
 		<div class="menu_bar">
 			<div class="s_left">
-				<span class="back" @click="back_from_selecting_online">
+				<span class="back" @click="back_within_selecting_online">
 					⬅️
 				</span>
 			</div>
@@ -197,12 +197,17 @@
 						{{online.signup_error}}
 					</div>
 				</div>
-				<div v-else>=
+				<div v-else>
+				
 					<div v-if="online.subscreen === 'user menu' ">
 						<div class="button" @click="new_online">
 							New Game
 						</div>
+						<div class="button" @click="continue_online">
+							Continue Game
+						</div>
 					</div>
+					
 					<div v-else-if="online.subscreen === 'select opponent' ">
 						<div class="form">
 							<div class="input_with_label">
@@ -223,6 +228,28 @@
 							</div>
 						</div>
 					</div>
+					
+					<div v-else-if="online.subscreen === 'continue online' ">
+						
+						<div v-if="online.has_current_games">
+							<div
+								v-for="(listed_game, lg_index) in online.games" 
+									:key="'lg'+lg_index"
+									@click="load_game(listed_game.id, listed_game.pw, listed_game.side)"
+									class="button continue_game_button"
+							>
+								{{listed_game.opponent}}
+							</div>
+						</div>
+						
+						<div v-else>
+							<div class="no_current_games">
+								No current games
+							</div>
+						</div>
+							
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -259,8 +286,21 @@ export default {
 		back_from_pnp() {
 			this.back_after_end_game()
 		},
-		back_from_selecting_online() {
-			this.which_screen =  'show_menu'
+		back_within_selecting_online() {
+			switch (this.online.subscreen) {
+				case 'login or signup':
+				case 'user menu':
+					this.which_screen =  'show_menu'
+					break
+				case 'select opponent':
+				case 'continue online':
+					this.online.subscreen = 'user menu'
+					break
+				default:
+					this.which_screen =  'show_menu'
+					break
+			}
+			
 			console.log(this)
 			if (this.online.user === 'logging_in' || this.online.user === 'signing_up') {
 				this.online.user = ''
@@ -271,6 +311,7 @@ export default {
 		},
 		online_games() {
 			this.which_screen =  'show_selecting_online'
+			this.online.subscreen = 'login or signup'
 		},
 		to_log_in() {
 			this.online.user = 'logging_in'
@@ -381,7 +422,6 @@ export default {
 				
 				server_request = new XMLHttpRequest()
 				get_url = 'http://gods.philosofiles.com/sync/?action=create&pw='+pw+'&p1='+this.online.user+'&p2='+opp
-				lo(get_url)
 				
 				server_request.open("GET", get_url, false) // false = synchronous
 				server_request.send()
@@ -402,6 +442,16 @@ export default {
 				this.online.error = 'Unknown error'
 			}
 			
+		},
+		continue_online() {
+			this.online.subscreen = 'continue online'
+		},
+		load_game(id, pw, side) {
+			this.game_type = 'online'
+			this.which_screen =  'show_online'
+			this.online.game_id = id
+			this.online.pw = pw
+			this.online.side =  side
 		},
 		new_pass_and_play() {
 			this.game_type = 'pnp'
@@ -425,10 +475,19 @@ export default {
 				game_id: null,
 				pw: null,
 				side: null,
-				subscreen: 'select opponent', // default = ''
+				subscreen: 'continue online', // default = ''
 				error: '',
 				login_error: null,
-				signup_error: null
+				signup_error: null,
+				has_current_games: true,
+				games: [
+					{
+						opponent: 'Mel',
+						id: 21,
+						pw: 21449,
+						side: 1
+					}
+				]
 			}
 		}
 	},

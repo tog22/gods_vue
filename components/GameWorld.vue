@@ -718,7 +718,7 @@ export default {
 			
 			if (this.online_screen) {
 				
-								lo(this.online)
+				lo(this.online)
 				
 				var server_request = new XMLHttpRequest()
 					
