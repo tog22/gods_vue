@@ -323,40 +323,40 @@ export default {
 			lo(this)
 		},
 		log_in_button(error = false) {
-						
-						var user
-						var pw
-						if (error) {
-							user = document.getElementById('log_err_u').value
-							pw = document.getElementById('log_err_p').value
-						} else {
-							user = document.getElementById('log_u').value
-							pw = document.getElementById('log_p').value
-						}
-						
-						var server_request = new XMLHttpRequest()
-							
-						let get_url = 'http://gods.philosofiles.com/sync/?action=login&username='+user+'&pw='+pw
-						//lo(get_url)
-						
-						server_request.open("GET", get_url, false) // false = synchronous
-						server_request.send()
-						
-						const response = JSON.parse(server_request.responseText)
-						lo(response)
-						
-						if (response.result === 'success') {
-							this.online.user = user
-							this.online.subscreen = 'user menu'
-						} else if (response.result === "un or pw wrong") {
-							this.which_screen = 'show_selecting_online'
-							this.online.user = 'login_error'
-							this.online.login_error='Wrong username or password'
-						} else {
-							// todo: general error message
-							alert('other error')
-						}
-						
+			
+			var user
+			var pw
+			if (error) {
+				user = document.getElementById('log_err_u').value
+				pw = document.getElementById('log_err_p').value
+			} else {
+				user = document.getElementById('log_u').value
+				pw = document.getElementById('log_p').value
+			}
+			
+			var server_request = new XMLHttpRequest()
+				
+			let get_url = 'http://gods.philosofiles.com/sync/?action=login&username='+user+'&pw='+pw
+			//lo(get_url)
+			
+			server_request.open("GET", get_url, false)
+			server_request.send()
+			
+			const response = JSON.parse(server_request.responseText)
+			lo(response)
+			
+			if (response.result === 'success') {
+				this.online.user = user
+				this.online.subscreen = 'user menu'
+			} else if (response.result === "un or pw wrong") {
+				this.which_screen = 'show_selecting_online'
+				this.online.user = 'login_error'
+				this.online.login_error='Wrong username or password'
+			} else {
+				// todo: general error message
+				alert('other error')
+			}
+			
 		},
 		sign_up_button(error = false) {
 			
@@ -375,7 +375,7 @@ export default {
 			let get_url = 'http://gods.philosofiles.com/sync/?action=signup&username='+user+'&pw='+pw
 			//lo(get_url)
 			
-			server_request.open("GET", get_url, false) // false = synchronous
+			server_request.open("GET", get_url, false)
 			server_request.send()
 			
 			const response = JSON.parse(server_request.responseText)
@@ -409,7 +409,7 @@ export default {
 			let get_url = 'http://gods.philosofiles.com/sync/?action=find_user&user='+opp
 			lo(get_url)
 			
-			server_request.open("GET", get_url, false) // false = synchronous
+			server_request.open("GET", get_url, false)
 			server_request.send()
 			
 			const response = JSON.parse(server_request.responseText)
@@ -423,7 +423,7 @@ export default {
 				server_request = new XMLHttpRequest()
 				get_url = 'http://gods.philosofiles.com/sync/?action=create&pw='+pw+'&p1='+this.online.user+'&p2='+opp
 				
-				server_request.open("GET", get_url, false) // false = synchronous
+				server_request.open("GET", get_url, false)
 				server_request.send()
 				
 				const response = JSON.parse(server_request.responseText)
@@ -444,7 +444,19 @@ export default {
 			
 		},
 		continue_online() {
+			
+			server_request = new XMLHttpRequest()
+			get_url = 'http://gods.philosofiles.com/sync/?action=list_games&user='+this.online.user
+			
+			server_request.open("GET", get_url, false)
+			server_request.send()
+			
+			const response = JSON.parse(server_request.responseText)
+			
+			if (response.result === 'success') 
+			
 			this.online.subscreen = 'continue online'
+			
 		},
 		load_game(id, pw, side) {
 			this.game_type = 'online'
