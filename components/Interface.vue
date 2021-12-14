@@ -235,7 +235,7 @@
 							<div
 								v-for="(listed_game, lg_index) in online.games" 
 									:key="'lg'+lg_index"
-									@click="load_game(listed_game.id, listed_game.pw, listed_game.side)"
+									@click="load_game(listed_game.id, listed_game.game_pass, listed_game.side)"
 									class="button continue_game_button"
 							>
 								{{listed_game.opponent}}
@@ -347,6 +347,7 @@ export default {
 			
 			if (response.result === 'success') {
 				this.online.user = user
+				this.online.userpass = pw
 				this.online.subscreen = 'user menu'
 			} else if (response.result === "un or pw wrong") {
 				this.which_screen = 'show_selecting_online'
@@ -433,7 +434,7 @@ export default {
 					this.which_screen =  'show_online'
 					this.online.side =  1
 					this.online.game_id = response.game_id
-					this.online.pw = pw
+					this.online.game_pass = pw
 				} else {
 					this.online.error = 'Failed to create game'
 				}
@@ -445,16 +446,22 @@ export default {
 		},
 		continue_online() {
 			
-			server_request = new XMLHttpRequest()
-			get_url = 'http://gods.philosofiles.com/sync/?action=list_games&user='+this.online.user
+			let server_request = new XMLHttpRequest()
+			let get_url = 'https://gods.philosofiles.com/sync/?action=list_games&username='+this.online.user+'&userpass='+this.online.userpass
+			lo(get_url)
 			
 			server_request.open("GET", get_url, false)
 			server_request.send()
 			
 			const response = JSON.parse(server_request.responseText)
 			
-			if (response.result === 'success') 
+			if (response.result === 'failure' || !response.games_found) {
+				alert("You don't have any active games")
+				return
+				// todo: change
+			}
 			
+			this.online.games = response.games
 			this.online.subscreen = 'continue online'
 			
 		},
@@ -462,7 +469,7 @@ export default {
 			this.game_type = 'online'
 			this.which_screen =  'show_online'
 			this.online.game_id = id
-			this.online.pw = pw
+			this.online.game_pass = pw
 			this.online.side =  side
 		},
 		new_pass_and_play() {
@@ -484,21 +491,24 @@ export default {
 			type_of_victory: '',
 			online: {
 				user: 'Tomek', // Tomek/logging_in/etc
+				userpass: 'pass',
 				game_id: null,
-				pw: null,
+				game_pass: null,
 				side: null,
-				subscreen: 'continue online', // default = ''
+				subscreen: 'user menu', // default = 'user menu'
 				error: '',
 				login_error: null,
 				signup_error: null,
-				has_current_games: true,
+				has_current_games: true, // todo, low: set
 				games: [
+					/*
 					{
 						opponent: 'Mel',
 						id: 21,
-						pw: 21449,
+						game_pass: 21449,
 						side: 1
 					}
+					*/
 				]
 			}
 		}

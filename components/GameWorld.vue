@@ -1,5 +1,5 @@
 <template>
-	<div class="game_world">
+	<div class="game_world" :class="is_waiting_online">
 		<table class="board">
 			<tr v-for="(row, row_index) in sotw" :key="'r'+row_index">
 				<Square 
@@ -66,6 +66,11 @@ export default {
 		****************************
 		***************************/
 		square_click(row, col) {
+			
+			if (this.waiting_online()) {
+				alert('Waiting for other player');
+				return;
+			}
 			
 			let clicked = this.sotw[row][col];
 			
@@ -673,6 +678,7 @@ export default {
 			return squares_to_check_for_trap
 			
 		},
+		
 		end_turn() {
 			
 			switch (this.current_player) {
@@ -701,13 +707,32 @@ export default {
 				
 				var server_request = new XMLHttpRequest()
 				
-				let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.pw+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
+				let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.game_pass+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
 				
 				server_request.open("GET", get_url, false) // false = synchronous
 				server_request.send()
 				
 			}
-		} 
+		},
+		
+		waiting_online() {
+			
+			if (!this.online_game) {
+				return false
+			}
+			
+			if (
+				(this.current_player === 1 && this.online.side === 2)
+				||
+				(this.current_player === 2 && this.online.side === 1)
+			) {
+				return true
+			} else {
+				return false
+			}
+			
+		}
+		
 	},
 	data() {
 		{
@@ -718,12 +743,9 @@ export default {
 			
 			if (this.online_screen) {
 				
-				lo(this.online)
-				
 				var server_request = new XMLHttpRequest()
 					
-				let get_url = 'http://gods.philosofiles.com/sync/?action=get&game='+this.online.game_id+'&pw='+this.online.pw
-				lo(get_url)
+				let get_url = 'http://gods.philosofiles.com/sync/?action=get&game='+this.online.game_id+'&pw='+this.online.game_pass
 				
 				server_request.open("GET", get_url, false) // false = synchronous
 				server_request.send()
@@ -1485,6 +1507,24 @@ export default {
 				case 2:
 					return '<span class="cpi hippo">🦛</span>';
 			}
+		},
+		
+		is_waiting_online: function() {
+			
+			if (!this.online_game) {
+				return ' is_pnp_game ';
+			}
+			
+			if (
+				(this.current_player === 1 && this.online.side === 2)
+				||
+				(this.current_player === 2 && this.online.side === 1)
+			) {
+				return ' is_online_game is_waiting_online ';
+			} else {
+				return ' is_online_game ';
+			}
+			
 		},
 		
 		which_screen: function() {
