@@ -1,5 +1,5 @@
 <template>
-	<div class="game_world" :class="is_waiting_online">
+	<div class="game_world">
 		<table class="board">
 			<tr v-for="(row, row_index) in sotw" :key="'r'+row_index">
 				<Square 
@@ -1507,24 +1507,6 @@ export default {
 				case 2:
 					return '<span class="cpi hippo">🦛</span>';
 			}
-		},
-		
-		is_waiting_online: function() {
-			
-			if (!this.online_game) {
-				return ' is_pnp_game ';
-			}
-			
-			if (
-				(this.current_player === 1 && this.online.side === 2)
-				||
-				(this.current_player === 2 && this.online.side === 1)
-			) {
-				return ' is_online_game is_waiting_online ';
-			} else {
-				return ' is_online_game ';
-			}
-			
 		},
 		
 		which_screen: function() {
