@@ -64,29 +64,3 @@ var vue_app = new Vue({
 **
 *************/
 
-/* Based on:
-	
-	https://dev.to/vbanditv/how-to-add-fcm-firebase-cloud-messaging-to-vuejs-37np)
-*/
-
-import firebase from 'firebase/app'
-import 'firebase/firebase-messaging'
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBGhSRGXLRM1m-nNMFNuJnSKu5AX--6vb0",
-  authDomain: "godsgamefbase.firebaseapp.com",
-  projectId: "godsgamefbase",
-  storageBucket: "godsgamefbase.appspot.com",
-  messagingSenderId: "306649763697",
-  appId: "1:306649763697:web:228785d43cabe34913b0d0"
-};
-vue_app.messaging = getMessaging(gods_firebase)
-
-// ↓ In this version, we don't export gods_firebase, vue_app, or vue_app.messaging. But I sometimes keep them in the code, even if they do nothing.
-const gods_firebase = firebase.initializeApp(firebaseConfig);
-let gods_fcm = firebase.messaging()
-console.log(gods_fcm)
-
-export { gods_fcm }
-
-// would continue with https://firebase.google.com/docs/cloud-messaging/js/receive
