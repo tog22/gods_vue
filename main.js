@@ -22,26 +22,27 @@ Vue.use(VueAxios, axios)
 
 /************
 **
-**  Firebase 
+**  Firebase (service worker part )
 **
 *************/
 
-// import firebaseMessaging from './preload/firebase'
-// Vue.prototype.$messaging = firebaseMessaging
+// Register service worked in standard vanillla JS way
 // 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register('firebase-messaging-sw.js')
-// 	.then(reg => {
-// 	  console.log(`Service Worker Registration (Scope: ${reg.scope})`);
-// 	})
-// 	.catch(error => {
-// 	  const msg = `Service Worker Error (${error})`;
-// 	  console.error(msg);
-// 	});
-// } else {
-//   // happens when the app isn't served over HTTPS or if the browser doesn't support service workers
-//   console.warn('Service Worker not available');
-// }
+// (Alt method at https://dev.to/vbanditv/how-to-add-fcm-firebase-cloud-messaging-to-vuejs-37np)
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('firebase-messaging-sw.js')
+	.then(reg => {
+	  console.log(`Service Worker Registered (Scope: ${reg.scope})`);
+	})
+	.catch(error => {
+	  const msg = `Service Worker Error (${error})`;
+	  console.error(msg);
+	});
+} else {
+  // happens when the app isn't served over HTTPS or if the browser doesn't support service workers
+  console.warn('Service Worker not available');
+}
 
 /***************
 **
@@ -57,18 +58,20 @@ var vue_app = new Vue({
 
 /************
 **
-**  Firebase 
+**  Firebase
+**  (recreating on the main app thread, 
+**  in addition to the service worker)
 **
 *************/
 
-import { initializeApp } from "firebase/app";
+/* Based on:
+	
+	https://dev.to/vbanditv/how-to-add-fcm-firebase-cloud-messaging-to-vuejs-37np)
+*/
 
-// Import the functions you need from the SDKs you need
+import firebase from 'firebase/app'
+import 'firebase/firebase-messaging'
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBGhSRGXLRM1m-nNMFNuJnSKu5AX--6vb0",
   authDomain: "godsgamefbase.firebaseapp.com",
@@ -77,14 +80,13 @@ const firebaseConfig = {
   messagingSenderId: "306649763697",
   appId: "1:306649763697:web:228785d43cabe34913b0d0"
 };
-// 
-// // Initialize Firebase
-const gods_firebase = initializeApp(firebaseConfig);
-
-// FCM: Firebase Cloud Messaging
-import {getMessaging, getToken } from "firebase/messaging";
 vue_app.messaging = getMessaging(gods_firebase)
-console.log(vue_app.messaging)
-getToken(vue_app.messaging, {vapidKey: "BACyAFjs1KoHzgCkmXllHlmBBqj6yLbxcJSD4wjxjN-bJKl6zaWSevcaxkanK0RD05GJrPK-1yHodls6kGoaf4w"});
+
+// ↓ In this version, we don't export gods_firebase, vue_app, or vue_app.messaging. But I sometimes keep them in the code, even if they do nothing.
+const gods_firebase = firebase.initializeApp(firebaseConfig);
+let gods_fcm = firebase.messaging()
+console.log(gods_fcm)
+
+export { gods_fcm }
 
 // would continue with https://firebase.google.com/docs/cloud-messaging/js/receive
