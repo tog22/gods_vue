@@ -13,8 +13,15 @@ export default {
 		Interface
 	},
 	created() {
-		lo('v_a')
-		// console.log(vue_app)
+		console.log('Firebase cloud messaging object', this.$messaging)
+		
+		const vapid_token = this.$messaging.getToken({vapidKey: "BACyAFjs1KoHzgCkmXllHlmBBqj6yLbxcJSD4wjxjN-bJKl6zaWSevcaxkanK0RD05GJrPK-1yHodls6kGoaf4w"});
+		lo('FCM registration token to add to Firebase console test messaging = ')
+		lo(vapid_token)
+		
+		this.$messaging.onMessage((message) => {
+			alert(JSON.stringify(message))
+		})
 	}
 }
 
