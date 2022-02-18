@@ -2,7 +2,7 @@
 ******************
 **              **
 **    tog.js    **
-**    (v1.04)   **
+**    (v1.06)   **
 **              **
 ******************
 *****************/
@@ -54,6 +54,8 @@ Animation
 Numbers
 	random_from(array)
 Strings
+Error-Catching
+	parse_json
 
 **************************/
 
@@ -87,8 +89,23 @@ var tog = {
 		function(object, mapFn) {
 			var array = []
 			for (var key in object) {
-				if (object.hasOwnProperty(key)) {
+				// ↓ I know this seems to duplicate the above, but it does (almost) the same as object.hasOwnPropery(), which the Vue compiler complains about. (Almost, because it counts prototype keys too)
+				if (key in object) { 
 					array.push(mapFn(object.key, key))
+				}
+			}
+			return array
+		},
+		
+		
+		map_numeric_obj_to_array:
+		
+		function(object, mapFn) {
+			var array = []
+			for (var key in object) {
+				// ↓ I know this seems to duplicate the above, but it does (almost) the same as object.hasOwnPropery(), which the Vue compiler complains about. (Almost, because it counts prototype keys too)
+				if (key in object) {
+					array.push(mapFn(object[key], key))
 				}
 			}
 			return array
@@ -270,10 +287,37 @@ var tog = {
 					return (!str || str.length === 0 );
 				}
 		*/
+	},
+	
+	/*********************
+	**					**
+	**  ERROR-CATCHING  **
+	**    (not in an	**
+	**      object)		**
+	**					**
+	*********************/
+	
+	parse_json:
+	function(json) {
+		let object
+		try {
+			object = JSON.parse(json)
+		} catch (error) {
+			let stringified_error = JSON.stringify(error)
+			if (error instanceof SyntaxError) {
+				lo('SyntaxError: '+stringified_error)
+				alert('SyntaxError: '+stringified_error)
+			} else {
+				let to_show = 'Non-SyntaxError: '+stringified_error
+			}
+		}
+		return object
 	}
 	
 };
 
-
+let lo = function (to_log) { 
+	console.log(to_log) 
+}
 
 export default tog;
