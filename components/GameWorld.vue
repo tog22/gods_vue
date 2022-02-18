@@ -38,12 +38,6 @@ import { bus } from '@/main'
 
 import Square from './Square.vue';
 
-let l = function (to_log) { 
-	console.log(to_log) 
-}
-let lo = l
-
-
 export default {
 	components: {
 		Square
@@ -1534,6 +1528,13 @@ export default {
 		
 	}
 };
+
+let l = function (to_log) { 
+	console.log(to_log) 
+}
+
+let lo = l
+
 </script>
 <style>
 

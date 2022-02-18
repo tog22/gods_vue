@@ -3,6 +3,11 @@ import Vue from 'vue'
 import App from './App.vue'
 export const bus = new Vue()
 
+// Error logging
+let l = function (to_log) { 
+	console.log(to_log) 
+}
+let lo = l
 
 /************
 **  Axios 
@@ -50,7 +55,6 @@ var vue_app = new Vue({
   render: h => h(App),
 }).$mount('#app')
 
-
 /************
 **
 **  Firebase 
@@ -78,7 +82,9 @@ const firebaseConfig = {
 const gods_firebase = initializeApp(firebaseConfig);
 
 // FCM: Firebase Cloud Messaging
-import {getMessaging} from "firebase/messaging";
-vue_app.messaging = getMessaging()
+import {getMessaging, getToken } from "firebase/messaging";
+vue_app.messaging = getMessaging(gods_firebase)
 console.log(vue_app.messaging)
-vue_app.messaging.getToken({vapidKey: "BACyAFjs1KoHzgCkmXllHlmBBqj6yLbxcJSD4wjxjN-bJKl6zaWSevcaxkanK0RD05GJrPK-1yHodls6kGoaf4w"});
+getToken(vue_app.messaging, {vapidKey: "BACyAFjs1KoHzgCkmXllHlmBBqj6yLbxcJSD4wjxjN-bJKl6zaWSevcaxkanK0RD05GJrPK-1yHodls6kGoaf4w"});
+
+// would continue with https://firebase.google.com/docs/cloud-messaging/js/receive
