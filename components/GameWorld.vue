@@ -519,7 +519,6 @@ export default {
 					} else {
 						return false
 					}
-					break
 				case 2:
 				default:
 					if (is_along_column && col_direction === 'down') {
@@ -530,7 +529,6 @@ export default {
 					} else {
 						return false
 					}
-					break
 			}
 			
 		},
@@ -1506,6 +1504,8 @@ export default {
 					return '<span class="cpi baboon player_pulse">🐒</span>';
 				case 2:
 					return '<span class="cpi hippo">🦛</span>';
+				default:
+					return 'Unset: this.current_player'
 			}
 		},
 		
