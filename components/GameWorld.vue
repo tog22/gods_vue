@@ -1526,6 +1526,48 @@ export default {
 			return 'dev' // 'dev'
 		}
 		
+	},
+	created() {
+		bus.$on('move', (move) => {
+			
+			
+			// 1 player code
+			
+			// Make the move
+			
+			if (move.inspiration) {
+				
+				let from = this.sotw[move.inspiration.from_row][move.inspiration.from_col]
+				let to = this.sotw[move.inspiration.to_row][move.inspiration.to_col]
+				from.divinely_inspired = false
+				to.divinely_inspired = true
+				
+				// Maybe have move sender send the results:
+				
+				this.check_for_trap(move.inspiration.from_row, move.inspiration.from_col)
+				this.check_for_reaching_heartland(to)
+				
+			}
+			
+			if (move.piece) {
+				
+				
+				let from = this.sotw[move.piece.from_row][move.piece.from_col]
+				let to = this.sotw[move.piece.to_row][move.piece.to_col]
+				from.occupant = null
+				from.side = null
+				to.occupant = move.piece.type
+				to.side = move.piece.side
+				this.check_for_trap(move.piece.from_row, move.piece.from_col)
+				
+			}
+			
+			// End turn/switch to the other player if appropriate
+			
+			// version of this.end_turn();
+
+			// end 1 player code
+		});
 	}
 };
 

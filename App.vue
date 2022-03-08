@@ -7,6 +7,10 @@
 <script>
 import Interface from './components/Interface.vue'
 
+import tog from '@/libraries/tog.js'
+import { bus } from '@/main'
+
+
 export default {
 	name: 'App',
 	components: {
@@ -20,7 +24,17 @@ export default {
 		lo(vapid_token)
 		
 		this.$messaging.onMessage((message) => {
-			alert(JSON.stringify(message))
+			let msg_body = tog.parse_json(message.notification.body)
+			switch (message.notification.title) {
+				case 'move':
+					bus.$emit('move', msg_body)
+					break
+				default: { // {} to allow `let`
+					let alert_text = 'Unknown firebase message received: '+JSON.stringify(message.notification)
+					alert(alert_text)
+					break
+				}
+			}
 		})
 	}
 }

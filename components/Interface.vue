@@ -14,7 +14,10 @@
 				</h1>
 			</div>
 			<div class="s_right">
-				
+				<span class="testbtn" 
+				@click="test_move_msg">
+					➡️
+				</span>
 			</div>
 		</div>
 		<GameWorld :online_screen="0" />
