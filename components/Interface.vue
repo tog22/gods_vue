@@ -35,7 +35,10 @@
 				</h1>
 			</div>
 			<div class="s_right">
-				
+				<span class="testbtn" 
+				@click="test_move_msg">
+					➡️
+				</span>
 			</div>
 		</div>
 		<GameWorld v-if="which_screen === 'show_online'" :online_screen="1" :online="online" />
@@ -80,7 +83,10 @@
 				</h1>
 			</div>
 			<div class="s_right">
-				
+				<span class="testbtn" 
+				@click="test_move_msg">
+					➡️
+				</span>
 			</div>
 		</div>
 		<div id="inner_selecting_online">
@@ -482,6 +488,9 @@ export default {
 		test_online_game() {
 			this.game_type = 'online'
 			this.which_screen =  'show_online'
+		},
+		test_move_msg() {
+			bus.$emit('test_move_arrow', {})
 		}
 	},
 	data() {

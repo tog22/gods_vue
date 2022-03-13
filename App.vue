@@ -1,11 +1,13 @@
 <template>
 	<div id="app">
 		<Interface/>
+		<OnlineSimulator />
 	</div>
 </template>
 
 <script>
 import Interface from './components/Interface.vue'
+import OnlineSimulator from './components/OnlineSimulator.vue'
 
 import tog from '@/libraries/tog.js'
 import { bus } from '@/main'
@@ -14,7 +16,8 @@ import { bus } from '@/main'
 export default {
 	name: 'App',
 	components: {
-		Interface
+		Interface,
+		OnlineSimulator
 	},
 	created() {
 		console.log('Firebase cloud messaging object', this.$messaging)
