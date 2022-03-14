@@ -29,6 +29,10 @@ export default {
 					to_col:		1,
 					type:		'mortal',
 					side:		2
+				},
+				meta: {
+					turn:			5,
+					current_player: 1
 				}
 			}
 			bus.$emit('move', move_info)

@@ -559,6 +559,9 @@ export default {
 							winner: 2,
 							win_type: 'Heartland reached'
 						})
+						if (this.online_game) {
+							this.send_turn();
+						}
 					}
 					break;
 				case 2:
@@ -569,6 +572,9 @@ export default {
 							winner: 1,
 							win_type: 'Heartland reached'
 						})
+						if (this.online_game) {
+							this.send_turn();
+						}
 					}
 					break;
 			}
@@ -600,6 +606,9 @@ export default {
 								winner: this.current_player,
 								win_type: 'Faith extinguished'
 							})
+							if (this.online_game) {
+								this.send_turn();
+							}
 						}
 						
 					}
@@ -681,7 +690,7 @@ export default {
 					this.current_player = 1;
 					break;
 			}
-			l(this.turn)
+			l('turn = '+this.turn)
 			this.turn++;
 			this.piece_has_moved = false;
 			this.inspiration_has_moved = false;
@@ -696,15 +705,17 @@ export default {
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
 			
 			if (this.online_game) {
-				
-				var server_request = new XMLHttpRequest()
-				
-				let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.game_pass+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
-				
-				server_request.open("GET", get_url, false) // false = synchronous
-				server_request.send()
-				
+				this.send_turn();
 			}
+		},
+		
+		send_turn() {
+			var server_request = new XMLHttpRequest()
+			
+			let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.game_pass+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
+			
+			server_request.open("GET", get_url, false) // false = synchronous
+			server_request.send()
 		},
 		
 		waiting_online() {
@@ -1542,10 +1553,7 @@ export default {
 				from.divinely_inspired = false
 				to.divinely_inspired = true
 				
-				// Maybe have move sender send the results:
-				
-				this.check_for_trap(move.inspiration.from_row, move.inspiration.from_col)
-				this.check_for_reaching_heartland(to)
+				// No need to check for winner, the sender does that
 				
 			}
 			
@@ -1565,6 +1573,8 @@ export default {
 			// End turn/switch to the other player if appropriate
 			
 			// version of this.end_turn();
+			this.turn = move.meta.turn
+			this.current_player = move.meta.current_player
 
 			// end 1 player code
 		});
