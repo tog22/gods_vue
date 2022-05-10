@@ -5,13 +5,28 @@
 		</h2>
 		<div id="online_simulator">
 			<p>
-				<button @click="receive_move(0)">
-					Receive move forward
+				<button @click="receive_move(5,1,6,1)">
+					5-1 ↓ 6-1 [from start]
 				</button>
 			</p>
 			<p>
-				<button @click="receive_move(1)">
-					Receive move back
+				<button @click="receive_move(6,1,5,1)">
+					6-1 ↑ 5-1
+				</button>
+			</p>
+			<p>
+				<button @click="receive_move(7,4,6,4)">
+					7-4 ↑ 6-4 [from start]
+				</button>
+			</p>
+			<p>
+				<button @click="receive_move(6,4,7,4)">
+					6-4 ↓ 7-4
+				</button>
+			</p>
+			<p>
+				<button @click="log_sotw">
+					Log SOTW
 				</button>
 			</p>
 		</div>
@@ -25,24 +40,26 @@ import { bus } from '@/main'
 export default {
 	name: 'OnlineSimulator',
 	methods: {
-		receive_move(back = false) {
+		
+		receive_move(from_row, from_col, to_row, to_col) {
 			let move_info = {
 				inspiration: false,
 				piece: {
-					from_row:	7,
-					from_col:	4,
-					to_row:		6,
-					to_col:		4,
+					from_row:	from_row,
+					from_col:	from_col,
+					to_row:		to_row,
+					to_col:		to_col,
 					type:		'mortal',
 					side:		2
 				}
 			}
-			if (back) {
-				move_info.piece.from_row =  6
-				move_info.piece.to_row = 7
-			}
 			bus.$emit('move', move_info)
+		},
+		
+		log_sotw() {
+			bus.$emit('log_sotw')
 		}
+		
 	},
 	created() {
 		bus.$on('test_move_arrow', () => {
