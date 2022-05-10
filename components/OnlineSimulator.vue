@@ -5,13 +5,13 @@
 		</h2>
 		<div id="online_simulator">
 			<p>
-				<button @click="receive_move(5,1,6,1)">
-					5-1 ↓ 6-1 [from start]
+				<button @click="receive_move(6,1,5,1)">
+					6-1 ↑ 5-1 [from start]
 				</button>
 			</p>
 			<p>
-				<button @click="receive_move(6,1,5,1)">
-					6-1 ↑ 5-1
+				<button @click="receive_move(5,1,6,1)">
+					5-1 ↓ 6-1
 				</button>
 			</p>
 			<p>
