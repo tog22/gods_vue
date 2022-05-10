@@ -671,7 +671,7 @@ export default {
 			
 		},
 		
-		end_turn() {
+		end_turn(by_opponent = false) {
 			
 			switch (this.current_player) {
 				case 1:
@@ -695,7 +695,7 @@ export default {
 			// Pulse animation is added in computed property current_player_image 
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
 			
-			if (this.online_game) {
+			if (this.online_game && !by_opponent) {
 				
 				var server_request = new XMLHttpRequest()
 				
@@ -761,9 +761,7 @@ export default {
 				
 			}
 			
-			// End turn/switch to the other player if appropriate
-			
-			// version of this.end_turn();
+			this.end_turn('by_opponent')
 			
 		},
 		

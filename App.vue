@@ -36,14 +36,14 @@ export default {
 				body:
 				
 				{
-					inspiration: false,
-					piece: {
-						from_row:	7,
-						from_col:	4,
-						to_row:		6,
-						to_col:		4,
-						type:		'mortal',
-						side:		2
+					"inspiration": false,
+					"piece": {
+						"from_row":	7,
+						"from_col":	4,
+						"to_row":		6,
+						"to_col":		4,
+						"type":		"mortal",
+						"side":		2
 					}
 				}
 				
