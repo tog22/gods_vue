@@ -727,7 +727,6 @@ export default {
 		
 		on_move_received(move) {
 			
-			lo('on_move_received')
 			// Make the move
 			
 			if (move.inspiration) {

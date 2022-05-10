@@ -28,6 +28,26 @@ export default {
 		
 		this.$messaging.onMessage((message) => {
 			let msg_body = tog.parse_json(message.notification.body)
+			/* Example message to send:
+			
+				title: 
+				Move
+				
+				body:
+				
+				{
+					inspiration: false,
+					piece: {
+						from_row:	7,
+						from_col:	4,
+						to_row:		6,
+						to_col:		4,
+						type:		'mortal',
+						side:		2
+					}
+				}
+				
+			*/
 			switch (message.notification.title) {
 				case 'move':
 					bus.$emit('move', msg_body)
