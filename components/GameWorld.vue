@@ -681,7 +681,7 @@ export default {
 					this.current_player = 1;
 					break;
 			}
-			l(this.turn)
+			l('Turn = '+this.turn)
 			this.turn++;
 			this.piece_has_moved = false;
 			this.inspiration_has_moved = false;
