@@ -27,7 +27,7 @@ export default {
 		lo(vapid_token)
 		
 		this.$messaging.onMessage((message) => {
-			let msg_body = tog.parse_json(message.notification.body)
+			let msg_body = fcm_body_to_object(message.notification.body)
 			/* Example message to send:
 			
 				title: 
@@ -60,6 +60,14 @@ export default {
 			}
 		})
 	}
+}
+
+function fcm_body_to_object(string) {
+	
+	string.replace('\"', '"')
+	let object = JSON.parse(string)
+	return object
+	
 }
 
 let l = function (to_log) { 
