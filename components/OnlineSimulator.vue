@@ -4,9 +4,31 @@
 			Simulate online player
 		</h2>
 		<div id="online_simulator">
-			<button @click="receive_move">
-				Receive move
-			</button>
+			<p>
+				<button @click="receive_move(6,1,5,1)">
+					6-1 ↑ 5-1 [from start]
+				</button>
+			</p>
+			<p>
+				<button @click="receive_move(5,1,6,1)">
+					5-1 ↓ 6-1
+				</button>
+			</p>
+			<p>
+				<button @click="receive_move(7,4,6,4)">
+					7-4 ↑ 6-4 [from start]
+				</button>
+			</p>
+			<p>
+				<button @click="receive_move(6,4,7,4)">
+					6-4 ↓ 7-4
+				</button>
+			</p>
+			<p>
+				<button @click="log_sotw">
+					Log SOTW
+				</button>
+			</p>
 		</div>
 	</div>
 </template>
@@ -18,15 +40,15 @@ import { bus } from '@/main'
 export default {
 	name: 'OnlineSimulator',
 	methods: {
-		receive_move() {
-			alert('Simulating receiving a move')
+		
+		receive_move(from_row, from_col, to_row, to_col) {
 			let move_info = {
 				inspiration: false,
 				piece: {
-					from_row:	7,
-					from_col:	1,
-					to_row:		6,
-					to_col:		1,
+					from_row:	from_row,
+					from_col:	from_col,
+					to_row:		to_row,
+					to_col:		to_col,
 					type:		'mortal',
 					side:		2
 				},
@@ -36,11 +58,16 @@ export default {
 				}
 			}
 			bus.$emit('move', move_info)
+		},
+		
+		log_sotw() {
+			bus.$emit('log_sotw')
 		}
+		
 	},
 	created() {
 		bus.$on('test_move_arrow', () => {
-			this.receive_move();
+			this.receive_move(0);
 		})
 	}
 }

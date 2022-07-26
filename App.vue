@@ -27,7 +27,27 @@ export default {
 		lo(vapid_token)
 		
 		this.$messaging.onMessage((message) => {
-			let msg_body = tog.parse_json(message.notification.body)
+			let msg_body = fcm_body_to_object(message.notification.body)
+			/* Example message to send:
+			
+				title: 
+				Move
+				
+				body:
+				
+				{
+					"inspiration": false,
+					"piece": {
+						"from_row":	7,
+						"from_col":	4,
+						"to_row":		6,
+						"to_col":		4,
+						"type":		"mortal",
+						"side":		2
+					}
+				}
+				
+			*/
 			switch (message.notification.title) {
 				case 'move':
 					bus.$emit('move', msg_body)
@@ -40,6 +60,14 @@ export default {
 			}
 		})
 	}
+}
+
+function fcm_body_to_object(string) {
+	
+	string.replace('\"', '"')
+	let object = JSON.parse(string)
+	return object
+	
 }
 
 let l = function (to_log) { 

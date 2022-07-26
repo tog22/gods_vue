@@ -1,0 +1,1 @@
+Fix the fact that sotw doesn't get updated from starting valuewhen online game loaded (weird!!)

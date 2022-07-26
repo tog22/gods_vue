@@ -680,7 +680,7 @@ export default {
 			
 		},
 		
-		end_turn() {
+		end_turn(by_opponent = false) {
 			
 			switch (this.current_player) {
 				case 1:
@@ -690,7 +690,7 @@ export default {
 					this.current_player = 1;
 					break;
 			}
-			l('turn = '+this.turn)
+			l('Turn = '+this.turn)
 			this.turn++;
 			this.piece_has_moved = false;
 			this.inspiration_has_moved = false;
@@ -703,8 +703,8 @@ export default {
 			this.col_delta = null;
 			// Pulse animation is added in computed property current_player_image 
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
-			
-			if (this.online_game) {
+
+			if (this.online_game && !by_opponent) {
 				this.send_turn();
 			}
 		},
@@ -734,8 +734,54 @@ export default {
 				return false
 			}
 			
-		}
+		},
 		
+		on_move_received(move) {
+			
+			// Make the move
+			
+			if (move.inspiration) {
+				
+				/* ↓  NB: Don't use same let name 
+							in these 2 if blocks, because in Vue specifically the let name persists, and then becomes undefined in the 2nd if statement
+				*/
+				let from_for_inspiration = this.sotw[move.inspiration.from_row][move.inspiration.from_col]
+				let to_for_inspiration = this.sotw[move.inspiration.to_row][move.inspiration.to_col]
+				from_for_inspiration.divinely_inspired = false
+				to_for_inspiration.divinely_inspired = true
+				
+				// Maybe have move sender send the results:
+				
+				this.check_for_trap(move.inspiration.from_row, move.inspiration.from_col)
+				this.check_for_reaching_heartland(to_for_inspiration)
+				
+			}
+			
+			if (move.piece) {
+				
+				/* ↓  NB: Don't use same let name 
+							in these 2 if blocks, because in Vue specifically the let name persists, and then becomes undefined in the 2nd if statement
+				*/
+				let from_for_move = this.sotw[move.piece.from_row][move.piece.from_col]
+				let to_for_move = this.sotw[move.piece.to_row][move.piece.to_col]
+				from_for_move.occupant = null
+				from_for_move.side = null
+				to_for_move.occupant = move.piece.type
+				to_for_move.side = move.piece.side
+				this.check_for_trap(move.piece.from_row, move.piece.from_col)
+				
+			}
+			
+			this.end_turn('by_opponent')
+			
+		},
+		
+		on_log_sotw() {
+			
+			lo(this.sotw)
+			
+		}
+ 		
 	},
 	data() {
 		{
@@ -1496,7 +1542,7 @@ export default {
 				col_delta: 				null,
 				winner:					null,
 				win_type: 				null,
-				online_game:			true, // this.online_screen
+				online_game:			true, // this.online_screen (…was my comment, do I mean to base it on this?)
 				sotw: 					sotw,
 			};
 		}
@@ -1538,45 +1584,29 @@ export default {
 		}
 		
 	},
+	
+	watch: {
+		sotw: function(new_val, old_val) {
+			lo('watcher -- new '+new_val+' -- old --'+old_val)
+		}
+	},
+	
 	created() {
+		
+		/*******************
+		**  BUS HANDLERS  **
+		*******************/
+		
 		bus.$on('move', (move) => {
 			
+			this.on_move_received(move)
 			
-			// 1 player code
+		});
+		
+		bus.$on('log_sotw', () => {
 			
-			// Make the move
+			this.on_log_sotw()
 			
-			if (move.inspiration) {
-				
-				let from = this.sotw[move.inspiration.from_row][move.inspiration.from_col]
-				let to = this.sotw[move.inspiration.to_row][move.inspiration.to_col]
-				from.divinely_inspired = false
-				to.divinely_inspired = true
-				
-				// No need to check for winner, the sender does that
-				
-			}
-			
-			if (move.piece) {
-				
-				
-				let from = this.sotw[move.piece.from_row][move.piece.from_col]
-				let to = this.sotw[move.piece.to_row][move.piece.to_col]
-				from.occupant = null
-				from.side = null
-				to.occupant = move.piece.type
-				to.side = move.piece.side
-				this.check_for_trap(move.piece.from_row, move.piece.from_col)
-				
-			}
-			
-			// End turn/switch to the other player if appropriate
-			
-			// version of this.end_turn();
-			this.turn = move.meta.turn
-			this.current_player = move.meta.current_player
-
-			// end 1 player code
 		});
 	}
 };
