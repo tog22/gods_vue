@@ -710,12 +710,16 @@ export default {
 		},
 		
 		send_turn() {
+			
 			var server_request = new XMLHttpRequest()
 			
 			let get_url = 'http://gods.philosofiles.com/sync/?action=update&game='+this.online.game_id+'&pw='+this.online.game_pass+'&turn='+this.turn+'&current_player='+this.current_player+'&winner='+this.winner+'&win_type='+this.win_type+'&sotw='+JSON.stringify(this.sotw);
 			
 			server_request.open("GET", get_url, false) // false = synchronous
 			server_request.send()
+			
+			lo(server_request.responseText)
+			
 		},
 		
 		waiting_online() {
