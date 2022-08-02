@@ -31,7 +31,6 @@
 </template>
 
 <script>
-// import $ from 'jquery'
 import '@/assets/styles.css';
 import tog from '@/libraries/tog.js'
 import { bus } from '@/main'
@@ -680,7 +679,7 @@ export default {
 			
 		},
 		
-		end_turn(by_opponent = false) {
+		end_turn(atclick_var = null, by_opponent = false) {
 			
 			switch (this.current_player) {
 				case 1:
@@ -703,7 +702,7 @@ export default {
 			this.col_delta = null;
 			// Pulse animation is added in computed property current_player_image 
 			/// (Adding it with jQuery here doesn't work as it then gets overridden there)
-
+			
 			if (this.online_game && !by_opponent) {
 				this.send_turn();
 			}
@@ -717,7 +716,7 @@ export default {
 			
 			server_request.open("GET", get_url, false) // false = synchronous
 			server_request.send()
-			
+			lo('response to ?update:')
 			lo(server_request.responseText)
 			
 		},
@@ -736,6 +735,23 @@ export default {
 				return true
 			} else {
 				return false
+			}
+			
+		},
+		
+		on_update_received(update) {
+			
+			lo('u=')
+			lo(update)
+			this.sotw = update.sotw
+			this.turn = update.turn
+			this.current_player = update.current_player
+			this.winner = update.winner
+			this.win_type = update.win_type
+			
+			if (this.winner) {
+				// Todo
+				alert('X won! Fill this info in')
 			}
 			
 		},
@@ -775,8 +791,7 @@ export default {
 				this.check_for_trap(move.piece.from_row, move.piece.from_col)
 				
 			}
-			
-			this.end_turn('by_opponent')
+			this.end_turn(null, 'by_opponent')
 			
 		},
 		
@@ -1604,6 +1619,12 @@ export default {
 		bus.$on('move', (move) => {
 			
 			this.on_move_received(move)
+			
+		});
+		
+		bus.$on('update_received', (update) => {
+			
+			this.on_update_received(update)
 			
 		});
 		

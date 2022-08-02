@@ -3,6 +3,29 @@
 		<h2>
 			Simulate online player
 		</h2>
+		<h3>
+			Opponent's phone triggering FCM
+		</h3>
+		<div id="online_simulator">
+			<p>
+				<button @click="opponent_fcm_test('74to64')">
+					7-4 ↑ 6-4 [from start]
+				</button>
+			</p>
+			<p>
+				<button @click="opponent_fcm_test('64to74')">
+					6-4 ↓ 7-4
+				</button>
+			</p>
+			<p>
+				<button @click="log_sotw">
+					Log SOTW
+				</button>
+			</p>
+		</div>
+		<h3>
+			Direct move (not via FCM)
+		</h3>
 		<div id="online_simulator">
 			<p>
 				<button @click="receive_move(6,1,5,1)">
@@ -35,7 +58,8 @@
 
 <script>
 import { bus } from '@/main'
-
+import _64to74 from '@/components/OnlineSimulator/64to74'
+import _74to64 from '@/components/OnlineSimulator/74to64'
 
 export default {
 	name: 'OnlineSimulator',
@@ -58,6 +82,20 @@ export default {
 				}
 			}
 			bus.$emit('move', move_info)
+		},
+		
+		opponent_fcm_test(move) {
+			
+			if (move === '64to74') {
+				lo('_var to emit=')
+				lo(_64to74)
+				bus.$emit('update_received', _64to74)
+			} else if (move === '74to64') {
+				lo('_var to emit=')
+				lo(_74to64)
+				bus.$emit('update_received', _74to64)
+			}
+			
 		},
 		
 		log_sotw() {

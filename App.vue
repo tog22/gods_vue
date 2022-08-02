@@ -64,7 +64,7 @@ export default {
 
 function fcm_body_to_object(string) {
 	
-	string.replace('\"', '"')
+	string.replace('\\"', '"')
 	let object = JSON.parse(string)
 	return object
 	
